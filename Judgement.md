@@ -14,7 +14,7 @@
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays the name of the person in charge, retrieved from the T_HANTEI or RSOS_T_PRODUCT_ORDER table.`
+- **Remarks:** Displays the name of the person in charge, retrieved from the T_HANTEI or RSOS_T_PRODUCT_ORDER table.
 
 ---
 
@@ -25,13 +25,13 @@
 - **Custom render:** `String`
 - **Source:**
   ```sql
-  SELECT from M_DISPLAY_ITEM;
+  SELECT VALUE from M_DISPLAY_ITEM join T_HANTEI by ITEM_NO;
   ```
-- **Logic:** `The in-house or outsourcing value is selected from the M_DISPLAY_ITEM table. The result is a display item that corresponds to either in-house or outsourcing, with the options defined as 0: 内製 (in-house) and 1: 外製 (outsourcing).`
+- **Logic:** The in-house or outsourcing text value is selected from the M_DISPLAY_ITEM table. T_HANTEI table contains ITEM_NO, This ITEM_NO is available inside M_DISPLAY_ITEM table. By matching result with ITEM_NO  displays item that corresponds to either in-house or outsourcing, with the options defined as 0: 内製 (in-house) and 1: 外製 (outsourcing).
 - **Save Destination:** `N/A` (Not editable)
-- **Validation:** `"「内製」"(In-house) for records acquired from the list of In-house(In-house) products and intermediate products, and "「外製」"(Outsourcing) for the list of purchased products.`
+- **Validation:** show only text value from M_DISPLAY_ITEM table which is matched with T_HANTEI.ITEM_NO and M_DISPLAY_ITEM.ITEM_NO
 - **Options:** `0: 内製, 1: 外製`
-- **Remarks:** `Displays whether the product is in-house or outsourced. Value is fixed at 0 for in-house.`
+- **Remarks:** Displays whether the product is in-house or outsourced. Value is fixed at 0 for in-house.
 
 ---
 
@@ -39,16 +39,16 @@
 
 - **Header Label:** `Reference Item CD (基準品目CD)`
 - **Data Type:** `Varchar`
-- **Custom render:** `String`
+- **Custom render:** The reference item code is retrieved from the RSOS_V_JUDGE_PRODUCT table by matching the ITEM_ID. The ITEM_CODE is returned as the reference item CD.
 - **Source:**
   ```sql
   SELECT ITEM_CODE FROM RSOS_V_JUDGE_PRODUCT WHERE ITEM_ID = :item_id;
   ```
-- **Logic:** `The reference item code is retrieved from the RSOS_V_JUDGE_PRODUCT table by matching the ITEM_ID. The ITEM_CODE is returned as the reference item CD.`
+- **Logic:** 
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays the reference item code, fetched from the RSOS_V_JUDGE_PRODUCT table.`
+- **Remarks:** Displays the reference item code, fetched from the RSOS_V_JUDGE_PRODUCT table.
 
 ---
 
@@ -61,11 +61,11 @@
   ```sql
   SELECT PRODUCT_SHORT_NAME FROM RSOS_V_JUDGE_PRODUCT WHERE ITEM_ID = :item_id;
   ```
-- **Logic:** `The production abbreviation is retrieved from the RSOS_V_JUDGE_PRODUCT table by matching the ITEM_ID. The PRODUCT_SHORT_NAME is returned as the production abbreviation.`
+- **Logic:** The production abbreviation is retrieved from the RSOS_V_JUDGE_PRODUCT table by matching the ITEM_ID. The PRODUCT_SHORT_NAME is returned as the production abbreviation.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays the production abbreviation, fetched from the RSOS_V_JUDGE_PRODUCT table.`
+- **Remarks:** Displays the production abbreviation, fetched from the RSOS_V_JUDGE_PRODUCT table.
 
 ---
 
@@ -78,11 +78,11 @@
   ```sql
   SELECT SALES_SHORT_NAME FROM RSOS_V_JUDGE_PRODUCT WHERE ITEM_ID = :item_id;
   ```
-- **Logic:** `The sales abbreviation is retrieved from the RSOS_V_JUDGE_PRODUCT table by matching the ITEM_ID. The SALES_SHORT_NAME is returned as the sales abbreviation.`
+- **Logic:** The sales abbreviation is retrieved from the RSOS_V_JUDGE_PRODUCT table by matching the ITEM_ID. The SALES_SHORT_NAME is returned as the sales abbreviation.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays the sales abbreviation, fetched from the RSOS_V_JUDGE_PRODUCT table.`
+- **Remarks:** Displays the sales abbreviation, fetched from the RSOS_V_JUDGE_PRODUCT table.
 
 ---
 
@@ -95,11 +95,11 @@
   ```sql
   SELECT LOT_NO FROM RSOS_V_JUDGE_PRODUCT WHERE ITEM_ID = :item_id;
   ```
-- **Logic:** `The lot number is fetched from the RSOS_V_JUDGE_PRODUCT table by matching the ITEM_ID. The LOT_NO is returned as the lot number.`
+- **Logic:** The lot number is fetched from the RSOS_V_JUDGE_PRODUCT table by matching the ITEM_ID. The LOT_NO is returned as the lot number.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays the lot number, fetched from the RSOS_V_JUDGE_PRODUCT table.`
+- **Remarks:** Displays the lot number, fetched from the RSOS_V_JUDGE_PRODUCT table.
 
 ---
 
@@ -112,11 +112,11 @@
   ```sql
   SELECT DELIVERY_DATE FROM RSOS_T_PRODUCT_ORDER WHERE ORDER_ID = :order_id;
   ```
-- **Logic:** `The delivery date is fetched from the RSOS_T_PRODUCT_ORDER table by matching the ORDER_ID. The DELIVERY_DATE is returned as the delivery date.`
+- **Logic:** The delivery date is fetched from the RSOS_T_PRODUCT_ORDER table by matching the ORDER_ID. The DELIVERY_DATE is returned as the delivery date.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays the delivery date, fetched from the RSOS_T_PRODUCT_ORDER table.`
+- **Remarks:** Displays the delivery date, fetched from the RSOS_T_PRODUCT_ORDER table.
 
 ---
 
@@ -129,11 +129,11 @@
   ```sql
   SELECT PRODUCT_PLACE_NAME FROM RSOS_V_JUDGE_PRODUCT WHERE ITEM_ID = :item_id;
   ```
-- **Logic:** `The production building or outsourcing location is retrieved from the RSOS_V_JUDGE_PRODUCT table by matching the ITEM_ID. The PRODUCT_PLACE_NAME is returned as the location.`
+- **Logic:** The production building or outsourcing location is retrieved from the RSOS_V_JUDGE_PRODUCT table by matching the ITEM_ID. The PRODUCT_PLACE_NAME is returned as the location.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays the name of the production building or outsourcing location, fetched from the RSOS_V_JUDGE_PRODUCT table.`
+- **Remarks:** Displays the name of the production building or outsourcing location, fetched from the RSOS_V_JUDGE_PRODUCT table.
 
 ---
 
@@ -146,11 +146,11 @@
   ```sql
   SELECT ITEM_NAME FROM RSOS_V_JUDGE_PRODUCT WHERE ITEM_ID = :item_id;
   ```
-- **Logic:** `The item name is fetched from the RSOS_V_JUDGE_PRODUCT table by matching the ITEM_ID. The ITEM_NAME is returned as the item name.`
+- **Logic:** The item name is fetched from the RSOS_V_JUDGE_PRODUCT table by matching the ITEM_ID. The ITEM_NAME is returned as the item name.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays the item name, fetched from the RSOS_V_JUDGE_PRODUCT table.`
+- **Remarks:** Displays the item name, fetched from the RSOS_V_JUDGE_PRODUCT table.
 
 ---
 
@@ -172,11 +172,11 @@
                     WHERE r.FLW_ORDER_CODE = RSOS_V_JUDGE_PRODUCT.ORDER_CODE
                     ) AS process_dates
   ```
-- **Logic:** `The date of dispensing is acquired through recursive processing based on the item’s order code and process type. It considers the maximum END_DATE or END_SCH_DATE where the process type is '1'.`
+- **Logic:** The date of dispensing is acquired through recursive processing based on the item’s order code and process type. It considers the maximum END_DATE or END_SCH_DATE where the process type is '1'.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays the date of dispensing, acquired through recursive processing.`
+- **Remarks:** Displays the date of dispensing, acquired through recursive processing.
 
 ---
 
@@ -198,11 +198,11 @@
                     WHERE r.FLW_ORDER_CODE = RSOS_V_JUDGE_PRODUCT.ORDER_CODE
                     ) AS process_dates
   ```
-- **Logic:** `The filling date is acquired through recursive processing based on the item’s order code and process type. It considers the maximum END_DATE or END_SCH_DATE where the process type is '2'.`
+- **Logic:** The filling date is acquired through recursive processing based on the item’s order code and process type. It considers the maximum END_DATE or END_SCH_DATE where the process type is '2'.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays the filling date, acquired through recursive processing.`
+- **Remarks:** Displays the filling date, acquired through recursive processing.
 
 ---
 
@@ -224,11 +224,11 @@
                     WHERE r.FLW_ORDER_CODE = RSOS_V_JUDGE_PRODUCT.ORDER_CODE
                     ) AS process_dates
   ```
-- **Logic:** `The packing date is acquired through recursive processing based on the item’s order code and process type. It considers the maximum END_DATE or END_SCH_DATE where the process type is '3'.`
+- **Logic:** The packing date is acquired through recursive processing based on the item’s order code and process type. It considers the maximum END_DATE or END_SCH_DATE where the process type is '3'.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays the packing date, acquired through recursive processing.`
+- **Remarks:** Displays the packing date, acquired through recursive processing.
 
 ---
 
@@ -241,11 +241,11 @@
   ```sql
   SELECT QTY, RECORD_QTY FROM RSOS_V_JUDGE_PRODUCT WHERE ITEM_ID = :item_id;
   ```
-- **Logic:** `The planned quantity is fetched from the RSOS_V_JUDGE_PRODUCT table by matching the ITEM_ID. Depending on whether the RECORD_QTY and END_DATE are valid, it returns RECORD_QTY or QTY.`
+- **Logic:** The planned quantity is fetched from the RSOS_V_JUDGE_PRODUCT table by matching the ITEM_ID. Depending on whether the RECORD_QTY and END_DATE are valid, it returns RECORD_QTY or QTY.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays the planned quantity. If RSOS_V_JUDGE_PRODUCT.END_DATE and RECORD_QTY are valid, RECORD_QTY is shown; otherwise, QTY is displayed.`
+- **Remarks:** Displays the planned quantity. If RSOS_V_JUDGE_PRODUCT.END_DATE and RECORD_QTY are valid, RECORD_QTY is shown; otherwise, QTY is displayed.
 
 ---
 
@@ -258,11 +258,11 @@
   ```sql
   SELECT SHIP_JUDGE_SCH_DATE FROM RSOS_V_JUDGE_PRODUCT WHERE ITEM_ID = :item_id;
   ```
-- **Logic:** `The usual judgment day is retrieved from the RSOS_V_JUDGE_PRODUCT table by matching the ITEM_ID. The SHIP_JUDGE_SCH_DATE is returned as the judgment day.`
+- **Logic:** The usual judgment day is retrieved from the RSOS_V_JUDGE_PRODUCT table by matching the ITEM_ID. The SHIP_JUDGE_SCH_DATE is returned as the judgment day.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays the usual judgment day, fetched from the RSOS_V_JUDGE_PRODUCT table.`
+- **Remarks:** Displays the usual judgment day, fetched from the RSOS_V_JUDGE_PRODUCT table.
 
 ---
 
@@ -275,11 +275,11 @@
   ```sql
   SELECT QC_STATUS FROM RSOS_T_PRODUCT_ORDER WHERE ORDER_ID = :order_id;
   ```
-- **Logic:** `The test status is fetched from the RSOS_T_PRODUCT_ORDER table by matching the ORDER_ID. The QC_STATUS is returned as the test status.`
+- **Logic:** The test status is fetched from the RSOS_T_PRODUCT_ORDER table by matching the ORDER_ID. The QC_STATUS is returned as the test status.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `Display acquired values (codes) as they are`
 - **Options:** `N/A`
-- **Remarks:** `Displays the test status, fetched from the RSOS_T_PRODUCT_ORDER table.`
+- **Remarks:** Displays the test status, fetched from the RSOS_T_PRODUCT_ORDER table.
 
 ---
 
@@ -292,11 +292,11 @@
   ```sql
   SELECT URGENT_TYPE FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
-- **Logic:** `The urgent sign is retrieved from the T_HANTEI table by matching the JUDGE_ID. The URGENT_TYPE is returned as the urgent sign.`
+- **Logic:** The urgent sign is retrieved from the T_HANTEI table by matching the JUDGE_ID. The URGENT_TYPE is returned as the urgent sign.
 - **Save Destination:** `T_HANTEI.URGENT_TYPE`
 - **Validation:** `Input required when急ぎ依頼日(the date of urgent request), 急ぎ判定希望日(desired date of urgent Judgment)・希望時間(desired time for urgent Judgment)are input.`
 - **Options:** `N/A`
-- **Remarks:** `Displays the urgent sign, fetched from the T_HANTEI table.`
+- **Remarks:** Displays the urgent sign, fetched from the T_HANTEI table.
 
 ---
 
@@ -309,11 +309,11 @@
   ```sql
   SELECT URGENT_REQ_DATE FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
-- **Logic:** `The urgent request date is fetched from the T_HANTEI table by matching the JUDGE_ID. The URGENT_REQ_DATE is returned as the urgent request date.`
+- **Logic:** The urgent request date is fetched from the T_HANTEI table by matching the JUDGE_ID. The URGENT_REQ_DATE is returned as the urgent request date.
 - **Save Destination:** `T_HANTEI.URGENT_REQ_DATE`
 - **Validation:** `Set today's date when setting「急ぎサイン」(c16) . Required when input 「急ぎサイン」(c16)`
 - **Options:** `N/A`
-- **Remarks:** `Displays the urgent request date, fetched from the T_HANTEI table.`
+- **Remarks:** Displays the urgent request date, fetched from the T_HANTEI table.
 
 ---
 
@@ -326,11 +326,11 @@
   ```sql
   SELECT URGENT_JUDGE_REQ_DATE FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
-- **Logic:** `The desired date for urgent judgment is retrieved from the T_HANTEI table by matching the JUDGE_ID. The URGENT_JUDGE_REQ_DATE is returned as the desired judgment date.`
+- **Logic:** The desired date for urgent judgment is retrieved from the T_HANTEI table by matching the JUDGE_ID. The URGENT_JUDGE_REQ_DATE is returned as the desired judgment date.
 - **Save Destination:** `T_HANTEI.URGENT_JUDGE_REQ_DATE`
 - **Validation:** `When the「急ぎサイン」(c16) is other than 「1=急」(1=urgent),input is not possible. And input required when「急ぎサイン」(c16) is 「1=急」(1=urgent).`
 - **Options:** `N/A`
-- **Remarks:** `Displays the desired date for the urgent judgment, fetched from the T_HANTEI table.`
+- **Remarks:** Displays the desired date for the urgent judgment, fetched from the T_HANTEI table.
 
 ---
 
@@ -343,11 +343,11 @@
   ```sql
   SELECT URGENT_JUDGE_REQ_TIME FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
-- **Logic:** `The desired time for urgent judgment is fetched from the T_HANTEI table by matching the JUDGE_ID. The URGENT_JUDGE_REQ_TIME is returned as the desired time for judgment.`
+- **Logic:** The desired time for urgent judgment is fetched from the T_HANTEI table by matching the JUDGE_ID. The URGENT_JUDGE_REQ_TIME is returned as the desired time for judgment.
 - **Save Destination:** `T_HANTEI.URGENT_JUDGE_REQ_TIME`
 - **Validation:** `When the「急ぎサイン」(c16) is other than 「1=急」(1=urgent),input is not possible.`
 - **Options:** `N/A`
-- **Remarks:** `Displays the desired time for the urgent judgment, fetched from the T_HANTEI table.`
+- **Remarks:** Displays the desired time for the urgent judgment, fetched from the T_HANTEI table.
 
 ---
 
@@ -360,11 +360,11 @@
   ```sql
   SELECT URGENT_JUDGE_RESP FROM T_RESPONSE WHERE RESPONSE_ID = :response_id;
   ```
-- **Logic:** `The reply from the quality department is fetched from the T_RESPONSE table by matching the RESPONSE_ID. The URGENT_JUDGE_RESP is returned as the reply.`
+- **Logic:** The reply from the quality department is fetched from the T_RESPONSE table by matching the RESPONSE_ID. The URGENT_JUDGE_RESP is returned as the reply.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays the reply from the quality department, fetched from the T_RESPONSE table.`
+- **Remarks:** Displays the reply from the quality department, fetched from the T_RESPONSE table.
 
 ---
 
@@ -377,11 +377,11 @@
   ```sql
   SELECT URGENT_JUDGE_RESP_ANS_DATE FROM T_RESPONSE WHERE RESPONSE_ID = :response_id;
   ```
-- **Logic:** `The revision judgment date is fetched from the T_RESPONSE table by matching the RESPONSE_ID. The URGENT_JUDGE_RESP_ANS_DATE is returned as the revision judgment date.`
+- **Logic:** The revision judgment date is fetched from the T_RESPONSE table by matching the RESPONSE_ID. The URGENT_JUDGE_RESP_ANS_DATE is returned as the revision judgment date.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `When 修正判定時間(for c21)=1, display c21 + " AM". other than that, display c21.`
 - **Options:** `N/A`
-- **Remarks:** `Displays the revision judgment date, fetched from the T_RESPONSE table.`
+- **Remarks:** Displays the revision judgment date, fetched from the T_RESPONSE table.
 
 ---
 
@@ -394,11 +394,11 @@
   ```sql
   SELECT URGENT_JUDGE_RESP_ANS_TIME FROM T_RESPONSE WHERE RESPONSE_ID = :response_id;
   ```
-- **Logic:** `The revision judgment time is retrieved from the T_RESPONSE table by matching the RESPONSE_ID. The URGENT_JUDGE_RESP_ANS_TIME is returned as the revision judgment time.`
+- **Logic:** The revision judgment time is retrieved from the T_RESPONSE table by matching the RESPONSE_ID. The URGENT_JUDGE_RESP_ANS_TIME is returned as the revision judgment time.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays the revision judgment time, fetched from the T_RESPONSE table.`
+- **Remarks:** Displays the revision judgment time, fetched from the T_RESPONSE table.
 
 ---
 
@@ -411,11 +411,11 @@
   ```sql
   SELECT URGENT_ATTRIBUTE FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
-- **Logic:** `The attribute (color-coded) is fetched from the T_HANTEI table by matching the JUDGE_ID. The URGENT_ATTRIBUTE is returned as the attribute.`
+- **Logic:** The attribute (color-coded) is fetched from the T_HANTEI table by matching the JUDGE_ID. The URGENT_ATTRIBUTE is returned as the attribute.
 - **Save Destination:** `T_HANTEI.URGENT_ATTRIBUTE`
 - **Validation:** `When 「急ぎサイン」(c16) is 「1=急」 (1=urgent), input required.`
 - **Options:** `N/A`
-- **Remarks:** `Displays the attribute as color-coded information, fetched from the T_HANTEI table.`
+- **Remarks:** Displays the attribute as color-coded information, fetched from the T_HANTEI table.
 
 ---
 
@@ -506,11 +506,11 @@
                             END
                     END AS MOVE_REQ_DATE
   ```
-- **Logic:** `The desired movement date is calculated using logic based on the plant division name, urgent type, and other factors. It uses the calendar (ERP_CALEM) and the maximum date after considering the relevant conditions.`
+- **Logic:** The desired movement date is calculated using logic based on the plant division name, urgent type, and other factors. It uses the calendar (ERP_CALEM) and the maximum date after considering the relevant conditions.
 - **Save Destination:** `T_HANTEI.MOVE_REQ_DATE`
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays the desired movement date, calculated based on predefined logic.`
+- **Remarks:** Displays the desired movement date, calculated based on predefined logic.
 
 ---
 
@@ -573,11 +573,11 @@
                             END
                     END AS VESPER_FLAG
   ```
-- **Logic:** `The evening packing or morning delivery sign is calculated based on the plant division name and urgent type. It considers various factors, including response times and plant locations, and returns either a 0 or 1.`
+- **Logic:** The evening packing or morning delivery sign is calculated based on the plant division name and urgent type. It considers various factors, including response times and plant locations, and returns either a 0 or 1.
 - **Save Destination:** `T_HANTEI.VESPER_FLAG`
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays the evening packing or morning delivery sign, calculated based on predefined logic.`
+- **Remarks:** Displays the evening packing or morning delivery sign, calculated based on predefined logic.
 
 ---
 
@@ -623,11 +623,11 @@
                         )
                     END AS c26
   ```
-- **Logic:** `The usual available date for shipment is calculated based on the plant division and calendar (ERP_CALEM). The logic returns the maximum available date after considering the conditions for shipment.`
+- **Logic:** The usual available date for shipment is calculated based on the plant division and calendar (ERP_CALEM). The logic returns the maximum available date after considering the conditions for shipment.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays the usual available date for shipment, calculated based on predefined logic.`
+- **Remarks:** Displays the usual available date for shipment, calculated based on predefined logic.
   
 ---
 
@@ -666,11 +666,11 @@
                             END
                     END AS c27
   ```
-- **Logic:** `The available date for express shipment is calculated based on the plant division and response times. It uses the calendar (ERP_CALEM) to determine the maximum date considering urgency and shipment conditions.`
+- **Logic:** The available date for express shipment is calculated based on the plant division and response times. It uses the calendar (ERP_CALEM) to determine the maximum date considering urgency and shipment conditions.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays the available date for express shipment, calculated based on predefined logic.`
+- **Remarks:** Displays the available date for express shipment, calculated based on predefined logic.
 
 ---
 
@@ -683,11 +683,11 @@
   ```sql
   SELECT LATE_SHIP_POSSIBLE_DATE FROM T_NONURGENT_SHIPMENT WHERE SHIPMENT_ID:shipment_id;
   ```
-- **Logic:** `The available date for loose shipment is fetched from the T_NONURGENT_SHIPMENT table by matching the SHIPMENT_ID. The LATE_SHIP_POSSIBLE_DATE is returned as the loose shipment date.`
+- **Logic:** The available date for loose shipment is fetched from the T_NONURGENT_SHIPMENT table by matching the SHIPMENT_ID. The LATE_SHIP_POSSIBLE_DATE is returned as the loose shipment date.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays the available date for loose shipment, fetched from the T_NONURGENT_SHIPMENT table.`
+- **Remarks:** Displays the available date for loose shipment, fetched from the T_NONURGENT_SHIPMENT table.
 
 ---
 
@@ -732,11 +732,11 @@
                         )
                     END AS c29
   ```
-- **Logic:** `The desired date of loose judgment is calculated based on the T_NONURGENT_SHIPMENT and the plant division. It uses the calendar (ERP_CALEM) to determine the maximum date before the late ship possible date.`
+- **Logic:** The desired date of loose judgment is calculated based on the T_NONURGENT_SHIPMENT and the plant division. It uses the calendar (ERP_CALEM) to determine the maximum date before the late ship possible date.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `When the「急ぎサイン」(c16) is other than 「2=緩」(2=loose), input is not possible. Input required when 「急ぎサイン」(c16) is「2=緩」(2=loose)`
 - **Options:** `N/A`
-- **Remarks:** `Displays the desired date of loose judgment, fetched from the T_NONURGENT_SHIPMENT table.`
+- **Remarks:** Displays the desired date of loose judgment, fetched from the T_NONURGENT_SHIPMENT table.
 
 ---
 
@@ -752,11 +752,11 @@
                         ELSE 0
                     END AS c30
   ```
-- **Logic:** `The desired time of loose judgment is calculated based on whether the late ship possible date exists. If it does, a 0 is returned.`
+- **Logic:** The desired time of loose judgment is calculated based on whether the late ship possible date exists. If it does, a 0 is returned.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `When the「急ぎサイン」(c16) is other than 「2=緩」(2=loose), input is not possible.`
 - **Options:** `N/A`
-- **Remarks:** `Displays the desired time of loose judgment, fetched from the T_NONURGENT_SHIPMENT table.`
+- **Remarks:** Displays the desired time of loose judgment, fetched from the T_NONURGENT_SHIPMENT table.
 
 ---
 
@@ -787,11 +787,11 @@
                         )
                     END) AS DELIVERY_DESTINATION
   ```
-- **Logic:** `The destination or delivery name is determined either from the T_HANTEI or RSOS_M_LOCATION table based on whether the delivery destination is available or fetched from the inventory location.`)
+- **Logic:** The destination or delivery name is determined either from the T_HANTEI or RSOS_M_LOCATION table based on whether the delivery destination is available or fetched from the inventory location.
 - **Save Destination:** `T_HANTEI.DELIVERY_DESTINATION_NAME`
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays the destination or delivery name. If no data in T_HANTEI, it is fetched from RSOS_M_LOCATION.`
+- **Remarks:** Displays the destination or delivery name. If no data in T_HANTEI, it is fetched from RSOS_M_LOCATION.
 
 ---
 
@@ -814,11 +814,11 @@
                         )
                     END AS c32
   ```
-- **Logic:** `The number of pallets is calculated based on the quantity (RSOS_V_JUDGE_PRODUCT.QTY) and the pallet size (USD.FUSRDEC2) and other stock details. The result is returned after ceiling division.`
+- **Logic:** The number of pallets is calculated based on the quantity (RSOS_V_JUDGE_PRODUCT.QTY) and the pallet size (USD.FUSRDEC2) and other stock details. The result is returned after ceiling division.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays the number of pallets, calculated based on predefined logic.`
+- **Remarks:** Displays the number of pallets, calculated based on predefined logic.
 
 ---
 
@@ -831,11 +831,11 @@
   ```sql
   SELECT MOVE_TICKET_ISSUED FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
-- **Logic:** `Whether the movement ticket is issued is fetched from the T_HANTEI table by matching the JUDGE_ID. The MOVE_TICKET_ISSUED is returned as the result.`
+- **Logic:** Whether the movement ticket is issued is fetched from the T_HANTEI table by matching the JUDGE_ID. The MOVE_TICKET_ISSUED is returned as the result.
 - **Save Destination:** `T_HANTEI.MOVE_TICKET_ISSUED`
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays whether the movement ticket has been issued, fetched from the T_HANTEI table.`
+- **Remarks:** Displays whether the movement ticket has been issued, fetched from the T_HANTEI table.
 
 ---
 
@@ -848,11 +848,11 @@
   ```sql
   SELECT MOVE_FINISHED FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
-- **Logic:** `The completion of movement is fetched from the T_HANTEI table by matching the JUDGE_ID. The MOVE_FINISHED is returned as the result.`
+- **Logic:** The completion of movement is fetched from the T_HANTEI table by matching the JUDGE_ID. The MOVE_FINISHED is returned as the result.
 - **Save Destination:** `T_HANTEI.MOVE_FINISHED`
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays whether the movement has been completed, fetched from the T_HANTEI table.`
+- **Remarks:** Displays whether the movement has been completed, fetched from the T_HANTEI table.
 
 ---
 
@@ -868,11 +868,11 @@
                         ELSE 'X'
                     END AS c35
   ```
-- **Logic:** `The multiple locations inventory flag is calculated by counting stock entries from the relevant inventory tables (ERP_TUNITYSTOCKHST_ALL or ERP_INVDTF). A flag is set depending on the count.`
+- **Logic:** The multiple locations inventory flag is calculated by counting stock entries from the relevant inventory tables (ERP_TUNITYSTOCKHST_ALL or ERP_INVDTF). A flag is set depending on the count.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays the multiple locations inventory flag, calculated based on logic involving ERP_TUNITYSTOCKHST_ALL or ERP_INVDTF.`
+- **Remarks:** Displays the multiple locations inventory flag, calculated based on logic involving ERP_TUNITYSTOCKHST_ALL or ERP_INVDTF.
 
 ---
 
@@ -885,11 +885,11 @@
   ```sql
   SELECT PASSED_STOCK_QTY FROM V_SCREPORT WHERE ITEM_ID = :item_id;
   ```
-- **Logic:** `The total number of passed inventories is fetched from the V_SCREPORT table by matching the ITEM_ID. The PASSED_STOCK_QTY is returned as the result.`
+- **Logic:** The total number of passed inventories is fetched from the V_SCREPORT table by matching the ITEM_ID. The PASSED_STOCK_QTY is returned as the result.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays the total number of passed inventories, fetched from the V_SCREPORT table.`
+- **Remarks:** Displays the total number of passed inventories, fetched from the V_SCREPORT table.
 
 ---
 
@@ -902,11 +902,11 @@
   ```sql
   CASE WHEN V_SCREPORT.STOCK_DAYS < 15 THEN '◯' ELSE 'X' END AS c37
   ```
-- **Logic:** `The under stock days flag is calculated by comparing stock days against a threshold (e.g., 15 days). A flag is returned depending on whether the stock days meet the criteria.`
+- **Logic:** The under stock days flag is calculated by comparing stock days against a threshold (e.g., 15 days). A flag is returned depending on whether the stock days meet the criteria.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays the under stock days flag, calculated based on predefined logic.`
+- **Remarks:** Displays the under stock days flag, calculated based on predefined logic.
 
 ---
 
@@ -923,11 +923,11 @@
                         ELSE 'X'
                     END AS c38
   ```
-- **Logic:** `The under shipment flag for the current month is calculated by comparing planned and actual shipment quantities for the month. If the difference is below a threshold, a flag is returned.`
+- **Logic:** The under shipment flag for the current month is calculated by comparing planned and actual shipment quantities for the month. If the difference is below a threshold, a flag is returned.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays the under shipment flag for the current month, calculated based on predefined logic.`
+- **Remarks:** Displays the under shipment flag for the current month, calculated based on predefined logic.
 
 ---
 
@@ -945,11 +945,11 @@
                         ELSE 'X'
                     END AS c39
   ```
-- **Logic:** `The short-term under-planned flag for the following month is calculated by comparing planned quantities for the current and next month against stock levels. A flag is returned based on the comparison.`
+- **Logic:** The short-term under-planned flag for the following month is calculated by comparing planned quantities for the current and next month against stock levels. A flag is returned based on the comparison.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays the short-term under-planned flag for the following month, calculated based on predefined logic.`
+- **Remarks:** Displays the short-term under-planned flag for the following month, calculated based on predefined logic.
 
 ---
 
@@ -962,11 +962,11 @@
   ```sql
   SELECT CERTIFICATE_STATUS FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
-- **Logic:** `The status of the judgment report is fetched from the T_HANTEI table by matching the JUDGE_ID. The CERTIFICATE_STATUS is returned as the result.`
+- **Logic:** The status of the judgment report is fetched from the T_HANTEI table by matching the JUDGE_ID. The CERTIFICATE_STATUS is returned as the result.
 - **Save Destination:** `T_HANTEI.CERTIFICATE_STATUS`
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays the status of the judgment report, fetched from the T_HANTEI table.`
+- **Remarks:** Displays the status of the judgment report, fetched from the T_HANTEI table.
 
 ---
 
@@ -979,11 +979,11 @@
   ```sql
   SELECT SEND_MAIL_STATUS FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
-- **Logic:** `Whether an email has been sent is fetched from the T_HANTEI table by matching the JUDGE_ID. The SEND_MAIL_STATUS is returned as the result.`
+- **Logic:** Whether an email has been sent is fetched from the T_HANTEI table by matching the JUDGE_ID. The SEND_MAIL_STATUS is returned as the result.
 - **Save Destination:** `T_HANTEI.SEND_MAIL_STATUS`
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays whether an email has been sent, fetched from the T_HANTEI table.`
+- **Remarks:** Displays whether an email has been sent, fetched from the T_HANTEI table.
 
 ---
 
@@ -996,11 +996,11 @@
   ```sql
   SELECT NETP_JUDGE_DATE FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
-- **Logic:** `The date of the NETP judgment is fetched from the T_HANTEI table by matching the JUDGE_ID. The NETP_JUDGE_DATE is returned as the result.`
+- **Logic:** The date of the NETP judgment is fetched from the T_HANTEI table by matching the JUDGE_ID. The NETP_JUDGE_DATE is returned as the result.
 - **Save Destination:** `T_HANTEI.NETP_JUDGE_DATE`
 - **Validation:** `If null,「未」(not yet) is displayed.`
 - **Options:** `N/A`
-- **Remarks:** `Displays the date of the NETP judgment, fetched from the T_HANTEI table.`
+- **Remarks:** Displays the date of the NETP judgment, fetched from the T_HANTEI table.
 
 ---
 
@@ -1013,11 +1013,11 @@
   ```sql
   SELECT UPDATE_RECORD_TIME FROM T_RESPONSE WHERE RESPONSE_ID = :response_id;
   ```
-- **Logic:** `The last update time is fetched from the T_RESPONSE table by matching the RESPONSE_ID. The UPDATE_RECORD_TIME is returned as the result.`
+- **Logic:** The last update time is fetched from the T_RESPONSE table by matching the RESPONSE_ID. The UPDATE_RECORD_TIME is returned as the result.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays the last update time, fetched from the T_RESPONSE table.`
+- **Remarks:** Displays the last update time, fetched from the T_RESPONSE table.
 
 ---------------------------------------------------------
 ---------------------------------------------------------
@@ -1038,7 +1038,7 @@
 - **Save Destination:** `T_HANTEI.URGENT_TYPE`
 - **Validation:** `Input required when急ぎ依頼日(the date of urgent request), 急ぎ判定希望日(desired date of urgent Judgment)・希望時間(desired time for urgent Judgment)are input.`
 - **Options:** `0: 内製 , 1: 外製`
-- **Remarks:** `Displays the urgent sign, fetched from the T_HANTEI table.`
+- **Remarks:** Displays the urgent sign, fetched from the T_HANTEI table.
 
 ---
 
@@ -1051,11 +1051,11 @@
   ```sql
   SELECT URGENT_REQ_DATE FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
-- **Logic**: `The urgent request date is fetched from the T_HANTEI table by matching the JUDGE_ID. The URGENT_REQ_DATE is returned as the urgent request date.`
+- **Logic**: The urgent request date is fetched from the T_HANTEI table by matching the JUDGE_ID. The URGENT_REQ_DATE is returned as the urgent request date.
 - **Save Destination:** `T_HANTEI.URGENT_REQ_DATE`
 - **Validation:** `Set today's date when setting「急ぎサイン」(c16) . Required when input 「急ぎサイン」(c16)`
 - **Options:** `N/A`
-- **Remarks:** `Displays the urgent request date, fetched from the T_HANTEI table.`
+- **Remarks:** Displays the urgent request date, fetched from the T_HANTEI table.
 ---
 
 ### c18: **Desired Date of Urgent Judgment (急ぎ判定希望日)**
@@ -1067,11 +1067,11 @@
   ```sql
   SELECT URGENT_JUDGE_REQ_DATE FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
-- **Logic**: `The desired date for urgent judgment is retrieved from the T_HANTEI table by matching the JUDGE_ID. The URGENT_JUDGE_REQ_DATE is returned as the desired judgment date.`
+- **Logic**: The desired date for urgent judgment is retrieved from the T_HANTEI table by matching the JUDGE_ID. The URGENT_JUDGE_REQ_DATE is returned as the desired judgment date.
 - **Save Destination:** `T_HANTEI.URGENT_JUDGE_REQ_DATE`
 - **Validation:** `When the「急ぎサイン」(c16) is other than 「1=急」(1=urgent),input is not possible. And input required when「急ぎサイン」(c16) is 「1=急」(1=urgent). `
 - **Options:** `N/A`
-- **Remarks:** `Displays the desired date for the urgent judgment, fetched from the T_HANTEI table.`
+- **Remarks:** Displays the desired date for the urgent judgment, fetched from the T_HANTEI table.
 
 ---
 
@@ -1084,11 +1084,11 @@
   ```sql
   SELECT URGENT_JUDGE_REQ_TIME FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
-- **Logic**: `The desired time for urgent judgment is fetched from the T_HANTEI table by matching the JUDGE_ID. The URGENT_JUDGE_REQ_TIME is returned as the desired time for judgment.`
+- **Logic**: The desired time for urgent judgment is fetched from the T_HANTEI table by matching the JUDGE_ID. The URGENT_JUDGE_REQ_TIME is returned as the desired time for judgment.
 - **Save Destination:** `T_HANTEI.URGENT_JUDGE_REQ_TIME`
 - **Validation:** `When the「急ぎサイン」(c16) is other than 「1=急」(1=urgent),input is not possible.`
 - **Options:** `N/A`
-- **Remarks:** `Displays the desired time for the urgent judgment, fetched from the T_HANTEI table.`
+- **Remarks:** Displays the desired time for the urgent judgment, fetched from the T_HANTEI table.
 
 ---
 
@@ -1101,11 +1101,11 @@
   ```sql
   SELECT URGENT_ATTRIBUTE FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
-- **Logic:** `The attribute (color-coded) is fetched from the T_HANTEI table by matching the JUDGE_ID. The URGENT_ATTRIBUTE is returned as the attribute.`
+- **Logic:** The attribute (color-coded) is fetched from the T_HANTEI table by matching the JUDGE_ID. The URGENT_ATTRIBUTE is returned as the attribute.
 - **Save Destination:** `T_HANTEI.URGENT_ATTRIBUTE`
 - **Validation:** `When 「急ぎサイン」(c16) is 「1=急」 (1=urgent), input required.`
 - **Options:** `N/A`
-- **Remarks:** `Displays the attribute as color-coded information, fetched from the T_HANTEI table.`
+- **Remarks:** Displays the attribute as color-coded information, fetched from the T_HANTEI table.
 
 ---
 
@@ -1196,11 +1196,11 @@
                             END
                     END AS MOVE_REQ_DATE
   ```
-- **Logic:** `The desired movement date is calculated using logic based on the plant division name, urgent type, and other factors. It uses the calendar (ERP_CALEM) and the maximum date after considering the relevant conditions.`
+- **Logic:** The desired movement date is calculated using logic based on the plant division name, urgent type, and other factors. It uses the calendar (ERP_CALEM) and the maximum date after considering the relevant conditions.
 - **Save Destination:** `T_HANTEI.MOVE_REQ_DATE`
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays the desired movement date, calculated based on predefined logic.`
+- **Remarks:** Displays the desired movement date, calculated based on predefined logic.
 
 ---
 
@@ -1263,11 +1263,11 @@
                             END
                     END AS VESPER_FLAG
   ```
-- **Logic:** `The evening packing or morning delivery sign is calculated based on the plant division name and urgent type. It considers various factors, including response times and plant locations, and returns either a 0 or 1.`
+- **Logic:** The evening packing or morning delivery sign is calculated based on the plant division name and urgent type. It considers various factors, including response times and plant locations, and returns either a 0 or 1.
 - **Save Destination:** `T_HANTEI.VESPER_FLAG`
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays the evening packing or morning delivery sign, calculated based on predefined logic.`
+- **Remarks:** Displays the evening packing or morning delivery sign, calculated based on predefined logic.
 
 ---
 
@@ -1298,11 +1298,11 @@
                         )
                     END) AS DELIVERY_DESTINATION
   ```
-- **Logic:** `The destination or delivery name is determined either from the T_HANTEI or RSOS_M_LOCATION table based on whether the delivery destination is available or fetched from the inventory location.`
+- **Logic:** The destination or delivery name is determined either from the T_HANTEI or RSOS_M_LOCATION table based on whether the delivery destination is available or fetched from the inventory location.
 - **Save Destination:** `T_HANTEI.DELIVERY_DESTINATION_NAME`
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays the destination or delivery name. If no data in T_HANTEI, it is fetched from RSOS_M_LOCATION.`
+- **Remarks:** Displays the destination or delivery name. If no data in T_HANTEI, it is fetched from RSOS_M_LOCATION.
 
 ---
 
@@ -1315,11 +1315,11 @@
   ```sql
   SELECT MOVE_TICKET_ISSUED FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
-- **Logic:** `Whether the movement ticket is issued is fetched from the T_HANTEI table by matching the JUDGE_ID. The MOVE_TICKET_ISSUED is returned as the result.`
+- **Logic:** Whether the movement ticket is issued is fetched from the T_HANTEI table by matching the JUDGE_ID. The MOVE_TICKET_ISSUED is returned as the result.
 - **Save Destination:** `T_HANTEI.MOVE_TICKET_ISSUED`
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays whether the movement ticket has been issued, fetched from the T_HANTEI table.`
+- **Remarks:** Displays whether the movement ticket has been issued, fetched from the T_HANTEI table.
 
 ---
 
@@ -1332,11 +1332,11 @@
   ```sql
   SELECT MOVE_FINISHED FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
-- **Logic:** `The completion of movement is fetched from the T_HANTEI table by matching the JUDGE_ID. The MOVE_FINISHED is returned as the result.`
+- **Logic:** The completion of movement is fetched from the T_HANTEI table by matching the JUDGE_ID. The MOVE_FINISHED is returned as the result.
 - **Save Destination:** `T_HANTEI.MOVE_FINISHED`
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays whether the movement has been completed, fetched from the T_HANTEI table.`
+- **Remarks:** Displays whether the movement has been completed, fetched from the T_HANTEI table.
 
 ---
 
@@ -1349,11 +1349,11 @@
   ```sql
   SELECT CERTIFICATE_STATUS FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
-- **Logic:** `The status of the judgment report is fetched from the T_HANTEI table by matching the JUDGE_ID. The CERTIFICATE_STATUS is returned as the result.`
+- **Logic:** The status of the judgment report is fetched from the T_HANTEI table by matching the JUDGE_ID. The CERTIFICATE_STATUS is returned as the result.
 - **Save Destination:** `T_HANTEI.CERTIFICATE_STATUS`
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays the status of the judgment report, fetched from the T_HANTEI table.`
+- **Remarks:** Displays the status of the judgment report, fetched from the T_HANTEI table.
 
 ---
 
@@ -1366,11 +1366,11 @@
   ```sql
   SELECT SEND_MAIL_STATUS FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
-- **Logic:** `Whether an email has been sent is fetched from the T_HANTEI table by matching the JUDGE_ID. The SEND_MAIL_STATUS is returned as the result.`
+- **Logic:** Whether an email has been sent is fetched from the T_HANTEI table by matching the JUDGE_ID. The SEND_MAIL_STATUS is returned as the result.
 - **Save Destination:** `T_HANTEI.SEND_MAIL_STATUS`
 - **Validation:** `N/A`
 - **Options:** `N/A`
-- **Remarks:** `Displays whether an email has been sent, fetched from the T_HANTEI table.`
+- **Remarks:** Displays whether an email has been sent, fetched from the T_HANTEI table.
 
 ---
 
@@ -1383,11 +1383,11 @@
   ```sql
   SELECT NETP_JUDGE_DATE FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
-- **Logic:** `The date of the NETP judgment is fetched from the T_HANTEI table by matching the JUDGE_ID. The NETP_JUDGE_DATE is returned as the result.`
+- **Logic:** The date of the NETP judgment is fetched from the T_HANTEI table by matching the JUDGE_ID. The NETP_JUDGE_DATE is returned as the result.
 - **Save Destination:** `T_HANTEI.NETP_JUDGE_DATE`0
 - **Validation:** `If null,「未」(not yet) is displayed.`
 - **Options:** `N/A`
-- **Remarks:** `Displays the date of the NETP judgment, fetched from the T_HANTEI table.`
+- **Remarks:** Displays the date of the NETP judgment, fetched from the T_HANTEI table.
 
 
 ---------------------------------------------------------
