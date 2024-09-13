@@ -44,7 +44,6 @@
   ```sql
   SELECT ITEM_CODE FROM RSOS_V_JUDGE_PRODUCT WHERE ITEM_ID = :item_id;
   ```
-- **Logic:** 
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -56,12 +55,11 @@
 
 - **Header Label:** `Production Abbreviation (生産略称)`
 - **Data Type:** `Varchar`
-- **Custom render:** `String`
+- **Custom render:** The production abbreviation is retrieved from the RSOS_V_JUDGE_PRODUCT table by matching the ITEM_ID. The PRODUCT_SHORT_NAME is returned as the production abbreviation.
 - **Source:**
   ```sql
   SELECT PRODUCT_SHORT_NAME FROM RSOS_V_JUDGE_PRODUCT WHERE ITEM_ID = :item_id;
   ```
-- **Logic:** The production abbreviation is retrieved from the RSOS_V_JUDGE_PRODUCT table by matching the ITEM_ID. The PRODUCT_SHORT_NAME is returned as the production abbreviation.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -73,12 +71,11 @@
 
 - **Header Label:** `Sales Abbreviation (販売略称)`
 - **Data Type:** `Varchar`
-- **Custom render:** `String`
+- **Custom render:** The sales abbreviation is retrieved from the RSOS_V_JUDGE_PRODUCT table by matching the ITEM_ID. The SALES_SHORT_NAME is returned as the sales abbreviation.
 - **Source:**
   ```sql
   SELECT SALES_SHORT_NAME FROM RSOS_V_JUDGE_PRODUCT WHERE ITEM_ID = :item_id;
   ```
-- **Logic:** The sales abbreviation is retrieved from the RSOS_V_JUDGE_PRODUCT table by matching the ITEM_ID. The SALES_SHORT_NAME is returned as the sales abbreviation.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -90,12 +87,11 @@
 
 - **Header Label:** `Lot (ロット)`
 - **Data Type:** `Varchar`
-- **Custom render:** `String`
+- **Custom render:** The lot number is fetched from the RSOS_V_JUDGE_PRODUCT table by matching the ITEM_ID. The LOT_NO is returned as the lot number.
 - **Source:**
   ```sql
   SELECT LOT_NO FROM RSOS_V_JUDGE_PRODUCT WHERE ITEM_ID = :item_id;
   ```
-- **Logic:** The lot number is fetched from the RSOS_V_JUDGE_PRODUCT table by matching the ITEM_ID. The LOT_NO is returned as the lot number.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -107,12 +103,11 @@
 
 - **Header Label:** `Delivery Date (納品日)`
 - **Data Type:** `Date`
-- **Custom render:** `Date`
+- **Custom render:** The delivery date is fetched from the RSOS_T_PRODUCT_ORDER table by matching the ORDER_ID. The DELIVERY_DATE is returned as the delivery date.
 - **Source:**
   ```sql
   SELECT DELIVERY_DATE FROM RSOS_T_PRODUCT_ORDER WHERE ORDER_ID = :order_id;
   ```
-- **Logic:** The delivery date is fetched from the RSOS_T_PRODUCT_ORDER table by matching the ORDER_ID. The DELIVERY_DATE is returned as the delivery date.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -124,12 +119,11 @@
 
 - **Header Label:** `Production Building/Outsourcing (生産棟/外製先)`
 - **Data Type:** `Varchar`
-- **Custom render:** `String`
+- **Custom render:** The production building or outsourcing location is retrieved from the RSOS_V_JUDGE_PRODUCT table by matching the ITEM_ID. The PRODUCT_PLACE_NAME is returned as the location.
 - **Source:**
   ```sql
   SELECT PRODUCT_PLACE_NAME FROM RSOS_V_JUDGE_PRODUCT WHERE ITEM_ID = :item_id;
   ```
-- **Logic:** The production building or outsourcing location is retrieved from the RSOS_V_JUDGE_PRODUCT table by matching the ITEM_ID. The PRODUCT_PLACE_NAME is returned as the location.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -141,12 +135,11 @@
 
 - **Header Label:** `Item Name (品目名称)`
 - **Data Type:** `Varchar`
-- **Custom render:** `String`
+- **Custom render:** The item name is fetched from the RSOS_V_JUDGE_PRODUCT table by matching the ITEM_ID. The ITEM_NAME is returned as the item name.
 - **Source:**
   ```sql
   SELECT ITEM_NAME FROM RSOS_V_JUDGE_PRODUCT WHERE ITEM_ID = :item_id;
   ```
-- **Logic:** The item name is fetched from the RSOS_V_JUDGE_PRODUCT table by matching the ITEM_ID. The ITEM_NAME is returned as the item name.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -158,7 +151,7 @@
 
 - **Header Label:** `Date of Dispensing (調合日)`
 - **Data Type:** `Date`
-- **Custom render:** `Date`
+- **Custom render:** The date of dispensing is acquired through recursive processing based on the item’s order code and process type. It considers the maximum END_DATE or END_SCH_DATE where the process type is '1'.
 - **Source:**
   ```sql
   (SELECT JSON_OBJECT(
@@ -172,7 +165,6 @@
                     WHERE r.FLW_ORDER_CODE = RSOS_V_JUDGE_PRODUCT.ORDER_CODE
                     ) AS process_dates
   ```
-- **Logic:** The date of dispensing is acquired through recursive processing based on the item’s order code and process type. It considers the maximum END_DATE or END_SCH_DATE where the process type is '1'.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -184,7 +176,7 @@
 
 - **Header Label:** `Filling Date (充填日)`
 - **Data Type:** `Date`
-- **Custom render:** `Date`
+- **Custom render:** The filling date is acquired through recursive processing based on the item’s order code and process type. It considers the maximum END_DATE or END_SCH_DATE where the process type is '2'.
 - **Source:**
   ```sql
   (SELECT JSON_OBJECT(                    
@@ -198,7 +190,6 @@
                     WHERE r.FLW_ORDER_CODE = RSOS_V_JUDGE_PRODUCT.ORDER_CODE
                     ) AS process_dates
   ```
-- **Logic:** The filling date is acquired through recursive processing based on the item’s order code and process type. It considers the maximum END_DATE or END_SCH_DATE where the process type is '2'.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -210,7 +201,7 @@
 
 - **Header Label:** `Packing Date (包装日)`
 - **Data Type:** `Date`
-- **Custom render:** `Date`
+- **Custom render:** The packing date is acquired through recursive processing based on the item’s order code and process type. It considers the maximum END_DATE or END_SCH_DATE where the process type is '3'.
 - **Source:**
   ```sql
   (SELECT JSON_OBJECT(
@@ -224,7 +215,6 @@
                     WHERE r.FLW_ORDER_CODE = RSOS_V_JUDGE_PRODUCT.ORDER_CODE
                     ) AS process_dates
   ```
-- **Logic:** The packing date is acquired through recursive processing based on the item’s order code and process type. It considers the maximum END_DATE or END_SCH_DATE where the process type is '3'.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -236,12 +226,11 @@
 
 - **Header Label:** `Planned Quantity (予定数量)`
 - **Data Type:** `Decimal`
-- **Custom render:** `Decimal`
+- **Custom render:** The planned quantity is fetched from the RSOS_V_JUDGE_PRODUCT table by matching the ITEM_ID. Depending on whether the RECORD_QTY and END_DATE are valid, it returns RECORD_QTY or QTY.
 - **Source:**
   ```sql
   SELECT QTY, RECORD_QTY FROM RSOS_V_JUDGE_PRODUCT WHERE ITEM_ID = :item_id;
   ```
-- **Logic:** The planned quantity is fetched from the RSOS_V_JUDGE_PRODUCT table by matching the ITEM_ID. Depending on whether the RECORD_QTY and END_DATE are valid, it returns RECORD_QTY or QTY.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -253,12 +242,11 @@
 
 - **Header Label:** `Usual Judgment Day (通常判定日)`
 - **Data Type:** `Date`
-- **Custom render:** `Date`
+- **Custom render:** The usual judgment day is retrieved from the RSOS_V_JUDGE_PRODUCT table by matching the ITEM_ID. The SHIP_JUDGE_SCH_DATE is returned as the judgment day.
 - **Source:**
   ```sql
   SELECT SHIP_JUDGE_SCH_DATE FROM RSOS_V_JUDGE_PRODUCT WHERE ITEM_ID = :item_id;
   ```
-- **Logic:** The usual judgment day is retrieved from the RSOS_V_JUDGE_PRODUCT table by matching the ITEM_ID. The SHIP_JUDGE_SCH_DATE is returned as the judgment day.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -270,12 +258,11 @@
 
 - **Header Label:** `Test Status (試験ステータス)`
 - **Data Type:** `Varchar`
-- **Custom render:** `String`
+- **Custom render:** The test status is fetched from the RSOS_T_PRODUCT_ORDER table by matching the ORDER_ID. The QC_STATUS is returned as the test status.
 - **Source:**
   ```sql
   SELECT QC_STATUS FROM RSOS_T_PRODUCT_ORDER WHERE ORDER_ID = :order_id;
   ```
-- **Logic:** The test status is fetched from the RSOS_T_PRODUCT_ORDER table by matching the ORDER_ID. The QC_STATUS is returned as the test status.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `Display acquired values (codes) as they are`
 - **Options:** `N/A`
@@ -287,12 +274,11 @@
 
 - **Header Label:** `Urgent Sign (急ぎサイン)`
 - **Data Type:** `TinyInt`
-- **Custom render:** `TinyInt`
+- **Custom render:** The urgent sign is retrieved from the T_HANTEI table by matching the JUDGE_ID. The URGENT_TYPE is returned as the urgent sign.
 - **Source:**
   ```sql
   SELECT URGENT_TYPE FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
-- **Logic:** The urgent sign is retrieved from the T_HANTEI table by matching the JUDGE_ID. The URGENT_TYPE is returned as the urgent sign.
 - **Save Destination:** `T_HANTEI.URGENT_TYPE`
 - **Validation:** `Input required when急ぎ依頼日(the date of urgent request), 急ぎ判定希望日(desired date of urgent Judgment)・希望時間(desired time for urgent Judgment)are input.`
 - **Options:** `N/A`
@@ -304,12 +290,11 @@
 
 - **Header Label:** `Urgent Request Date (急ぎ依頼日)`
 - **Data Type:** `Date`
-- **Custom render:** `Date`
+- **Custom render:** The urgent request date is fetched from the T_HANTEI table by matching the JUDGE_ID. The URGENT_REQ_DATE is returned as the urgent request date.
 - **Source:**
   ```sql
   SELECT URGENT_REQ_DATE FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
-- **Logic:** The urgent request date is fetched from the T_HANTEI table by matching the JUDGE_ID. The URGENT_REQ_DATE is returned as the urgent request date.
 - **Save Destination:** `T_HANTEI.URGENT_REQ_DATE`
 - **Validation:** `Set today's date when setting「急ぎサイン」(c16) . Required when input 「急ぎサイン」(c16)`
 - **Options:** `N/A`
@@ -321,12 +306,11 @@
 
 - **Header Label:** `Desired Date of Urgent Judgment (急ぎ判定希望日)`
 - **Data Type:** `Date`
-- **Custom render:** `Date`
+- **Custom render:** The desired date for urgent judgment is retrieved from the T_HANTEI table by matching the JUDGE_ID. The URGENT_JUDGE_REQ_DATE is returned as the desired judgment date.
 - **Source:**
   ```sql
   SELECT URGENT_JUDGE_REQ_DATE FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
-- **Logic:** The desired date for urgent judgment is retrieved from the T_HANTEI table by matching the JUDGE_ID. The URGENT_JUDGE_REQ_DATE is returned as the desired judgment date.
 - **Save Destination:** `T_HANTEI.URGENT_JUDGE_REQ_DATE`
 - **Validation:** `When the「急ぎサイン」(c16) is other than 「1=急」(1=urgent),input is not possible. And input required when「急ぎサイン」(c16) is 「1=急」(1=urgent).`
 - **Options:** `N/A`
@@ -338,12 +322,11 @@
 
 - **Header Label:** `Desired Time for Urgent Judgment (急ぎ判定希望時間)`
 - **Data Type:** `TinyInt`
-- **Custom render:** `TinyInt`
+- **Custom render:** The desired time for urgent judgment is fetched from the T_HANTEI table by matching the JUDGE_ID. The URGENT_JUDGE_REQ_TIME is returned as the desired time for judgment.
 - **Source:**
   ```sql
   SELECT URGENT_JUDGE_REQ_TIME FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
-- **Logic:** The desired time for urgent judgment is fetched from the T_HANTEI table by matching the JUDGE_ID. The URGENT_JUDGE_REQ_TIME is returned as the desired time for judgment.
 - **Save Destination:** `T_HANTEI.URGENT_JUDGE_REQ_TIME`
 - **Validation:** `When the「急ぎサイン」(c16) is other than 「1=急」(1=urgent),input is not possible.`
 - **Options:** `N/A`
@@ -355,12 +338,11 @@
 
 - **Header Label:** `Reply of Quality Department (品質部門の返信)`
 - **Data Type:** `TinyInt`
-- **Custom render:** `TinyInt`
+- **Custom render:** The reply from the quality department is fetched from the T_RESPONSE table by matching the RESPONSE_ID. The URGENT_JUDGE_RESP is returned as the reply.
 - **Source:**
   ```sql
   SELECT URGENT_JUDGE_RESP FROM T_RESPONSE WHERE RESPONSE_ID = :response_id;
   ```
-- **Logic:** The reply from the quality department is fetched from the T_RESPONSE table by matching the RESPONSE_ID. The URGENT_JUDGE_RESP is returned as the reply.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -372,12 +354,11 @@
 
 - **Header Label:** `Revision Judgment Date (修正判定日)`
 - **Data Type:** `Date`
-- **Custom render:** `Date`
+- **Custom render:** The revision judgment date is fetched from the T_RESPONSE table by matching the RESPONSE_ID. The URGENT_JUDGE_RESP_ANS_DATE is returned as the revision judgment date.
 - **Source:**
   ```sql
   SELECT URGENT_JUDGE_RESP_ANS_DATE FROM T_RESPONSE WHERE RESPONSE_ID = :response_id;
   ```
-- **Logic:** The revision judgment date is fetched from the T_RESPONSE table by matching the RESPONSE_ID. The URGENT_JUDGE_RESP_ANS_DATE is returned as the revision judgment date.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `When 修正判定時間(for c21)=1, display c21 + " AM". other than that, display c21.`
 - **Options:** `N/A`
@@ -389,12 +370,11 @@
 
 - **Header Label:** `Revision Judgment Time (修正判定時間)`
 - **Data Type:** `TinyInt`
-- **Custom render:** `TinyInt`
+- **Custom render:** The revision judgment time is retrieved from the T_RESPONSE table by matching the RESPONSE_ID. The URGENT_JUDGE_RESP_ANS_TIME is returned as the revision judgment time.
 - **Source:**
   ```sql
   SELECT URGENT_JUDGE_RESP_ANS_TIME FROM T_RESPONSE WHERE RESPONSE_ID = :response_id;
   ```
-- **Logic:** The revision judgment time is retrieved from the T_RESPONSE table by matching the RESPONSE_ID. The URGENT_JUDGE_RESP_ANS_TIME is returned as the revision judgment time.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -406,12 +386,11 @@
 
 - **Header Label:** `Attributes (Color-Coded) (属性（色分け）)`
 - **Data Type:** `TinyInt`
-- **Custom render:** `TinyInt`
+- **Custom render:** The attribute (color-coded) is fetched from the T_HANTEI table by matching the JUDGE_ID. The URGENT_ATTRIBUTE is returned as the attribute.
 - **Source:**
   ```sql
   SELECT URGENT_ATTRIBUTE FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
-- **Logic:** The attribute (color-coded) is fetched from the T_HANTEI table by matching the JUDGE_ID. The URGENT_ATTRIBUTE is returned as the attribute.
 - **Save Destination:** `T_HANTEI.URGENT_ATTRIBUTE`
 - **Validation:** `When 「急ぎサイン」(c16) is 「1=急」 (1=urgent), input required.`
 - **Options:** `N/A`
@@ -678,12 +657,11 @@
 
 - **Header Label:** `Available Date for Loose Shipment (緩め出荷可能日)`
 - **Data Type:** `Date`
-- **Custom render:** `Date`
+- **Custom render:** The available date for loose shipment is fetched from the T_NONURGENT_SHIPMENT table by matching the SHIPMENT_ID. The LATE_SHIP_POSSIBLE_DATE is returned as the loose shipment date.
 - **Source:**
   ```sql
   SELECT LATE_SHIP_POSSIBLE_DATE FROM T_NONURGENT_SHIPMENT WHERE SHIPMENT_ID:shipment_id;
   ```
-- **Logic:** The available date for loose shipment is fetched from the T_NONURGENT_SHIPMENT table by matching the SHIPMENT_ID. The LATE_SHIP_POSSIBLE_DATE is returned as the loose shipment date.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -826,12 +804,11 @@
 
 - **Header Label:** `Whether Movement Ticket is Issued (移動票発行有無)`
 - **Data Type:** `Date`
-- **Custom render:** `Date`
+- **Custom render:** Whether the movement ticket is issued is fetched from the T_HANTEI table by matching the JUDGE_ID. The MOVE_TICKET_ISSUED is returned as the result.
 - **Source:**
   ```sql
   SELECT MOVE_TICKET_ISSUED FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
-- **Logic:** Whether the movement ticket is issued is fetched from the T_HANTEI table by matching the JUDGE_ID. The MOVE_TICKET_ISSUED is returned as the result.
 - **Save Destination:** `T_HANTEI.MOVE_TICKET_ISSUED`
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -843,12 +820,11 @@
 
 - **Header Label:** `Completion of Movement (移動完了有無)`
 - **Data Type:** `Date`
-- **Custom render:** `Date`
+- **Custom render:** The completion of movement is fetched from the T_HANTEI table by matching the JUDGE_ID. The MOVE_FINISHED is returned as the result.
 - **Source:**
   ```sql
   SELECT MOVE_FINISHED FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
-- **Logic:** The completion of movement is fetched from the T_HANTEI table by matching the JUDGE_ID. The MOVE_FINISHED is returned as the result.
 - **Save Destination:** `T_HANTEI.MOVE_FINISHED`
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -880,12 +856,11 @@
 
 - **Header Label:** `Total Number of Passed Inventories (合格在庫総数)`
 - **Data Type:** `Integer`
-- **Custom render:** `Integer`
+- **Custom render:** The total number of passed inventories is fetched from the V_SCREPORT table by matching the ITEM_ID. The PASSED_STOCK_QTY is returned as the result.
 - **Source:**
   ```sql
   SELECT PASSED_STOCK_QTY FROM V_SCREPORT WHERE ITEM_ID = :item_id;
   ```
-- **Logic:** The total number of passed inventories is fetched from the V_SCREPORT table by matching the ITEM_ID. The PASSED_STOCK_QTY is returned as the result.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -957,12 +932,11 @@
 
 - **Header Label:** `Judgment Report (成績書)`
 - **Data Type:** `TinyInt`
-- **Custom render:** `TinyInt`
+- **Custom render:** The status of the judgment report is fetched from the T_HANTEI table by matching the JUDGE_ID. The CERTIFICATE_STATUS is returned as the result.
 - **Source:**
   ```sql
   SELECT CERTIFICATE_STATUS FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
-- **Logic:** The status of the judgment report is fetched from the T_HANTEI table by matching the JUDGE_ID. The CERTIFICATE_STATUS is returned as the result.
 - **Save Destination:** `T_HANTEI.CERTIFICATE_STATUS`
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -974,12 +948,11 @@
 
 - **Header Label:** `Send Email (メール送信)`
 - **Data Type:** `TinyInt`
-- **Custom render:** `TinyInt`
+- **Custom render:** Whether an email has been sent is fetched from the T_HANTEI table by matching the JUDGE_ID. The SEND_MAIL_STATUS is returned as the result.
 - **Source:**
   ```sql
   SELECT SEND_MAIL_STATUS FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
-- **Logic:** Whether an email has been sent is fetched from the T_HANTEI table by matching the JUDGE_ID. The SEND_MAIL_STATUS is returned as the result.
 - **Save Destination:** `T_HANTEI.SEND_MAIL_STATUS`
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -991,12 +964,11 @@
 
 - **Header Label:** `Date of NETP Judgment (NETP判定日)`
 - **Data Type:** `Date`
-- **Custom render:** `Date`
+- **Custom render:** The date of the NETP judgment is fetched from the T_HANTEI table by matching the JUDGE_ID. The NETP_JUDGE_DATE is returned as the result.
 - **Source:**
   ```sql
   SELECT NETP_JUDGE_DATE FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
-- **Logic:** The date of the NETP judgment is fetched from the T_HANTEI table by matching the JUDGE_ID. The NETP_JUDGE_DATE is returned as the result.
 - **Save Destination:** `T_HANTEI.NETP_JUDGE_DATE`
 - **Validation:** `If null,「未」(not yet) is displayed.`
 - **Options:** `N/A`
@@ -1008,12 +980,11 @@
 
 - **Header Label:** `Last Update (最終更新日時)`
 - **Data Type:** `Datetime`
-- **Custom render:** `Datetime`
+- **Custom render:** The last update time is fetched from the T_RESPONSE table by matching the RESPONSE_ID. The UPDATE_RECORD_TIME is returned as the result.
 - **Source:**
   ```sql
   SELECT UPDATE_RECORD_TIME FROM T_RESPONSE WHERE RESPONSE_ID = :response_id;
   ```
-- **Logic:** The last update time is fetched from the T_RESPONSE table by matching the RESPONSE_ID. The UPDATE_RECORD_TIME is returned as the result.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -1036,7 +1007,7 @@
   SELECT URGENT_TYPE FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
 - **Save Destination:** `T_HANTEI.URGENT_TYPE`
-- **Validation:** `Input required when急ぎ依頼日(the date of urgent request), 急ぎ判定希望日(desired date of urgent Judgment)・希望時間(desired time for urgent Judgment)are input.`
+- **Validation:** ``
 - **Options:** `0: 内製 , 1: 外製`
 - **Remarks:** Displays the urgent sign, fetched from the T_HANTEI table.
 
@@ -1046,12 +1017,11 @@
 
 - **Header Label:** `Urgent Request Date (急ぎ依頼日)`
 - **Data Type:** `Date`
-- **Custom render:** `Date`
+- **Custom render:** The urgent request date is fetched from the T_HANTEI table by matching the JUDGE_ID. The URGENT_REQ_DATE is returned as the urgent request date.
 - **Source:**
   ```sql
   SELECT URGENT_REQ_DATE FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
-- **Logic**: The urgent request date is fetched from the T_HANTEI table by matching the JUDGE_ID. The URGENT_REQ_DATE is returned as the urgent request date.
 - **Save Destination:** `T_HANTEI.URGENT_REQ_DATE`
 - **Validation:** `Set today's date when setting「急ぎサイン」(c16) . Required when input 「急ぎサイン」(c16)`
 - **Options:** `N/A`
@@ -1062,12 +1032,11 @@
 
 - **Header Label:** `Desired Date of Urgent Judgment (急ぎ判定希望日)`
 - **Data Type:** `Date`
-- **Custom render:** `Date`
+- **Custom render:** The desired date for urgent judgment is retrieved from the T_HANTEI table by matching the JUDGE_ID. The URGENT_JUDGE_REQ_DATE is returned as the desired judgment date.
 - **Source:**
   ```sql
   SELECT URGENT_JUDGE_REQ_DATE FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
-- **Logic**: The desired date for urgent judgment is retrieved from the T_HANTEI table by matching the JUDGE_ID. The URGENT_JUDGE_REQ_DATE is returned as the desired judgment date.
 - **Save Destination:** `T_HANTEI.URGENT_JUDGE_REQ_DATE`
 - **Validation:** `When the「急ぎサイン」(c16) is other than 「1=急」(1=urgent),input is not possible. And input required when「急ぎサイン」(c16) is 「1=急」(1=urgent). `
 - **Options:** `N/A`
@@ -1079,12 +1048,11 @@
 
 - **Header Label:** `Desired Time for Urgent Judgment (急ぎ判定希望時間)`
 - **Data Type:** `TinyInt`
-- **Custom render:** `TinyInt`
+- **Custom render:** The desired time for urgent judgment is fetched from the T_HANTEI table by matching the JUDGE_ID. The URGENT_JUDGE_REQ_TIME is returned as the desired time for judgment.
 - **Source:**
   ```sql
   SELECT URGENT_JUDGE_REQ_TIME FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
-- **Logic**: The desired time for urgent judgment is fetched from the T_HANTEI table by matching the JUDGE_ID. The URGENT_JUDGE_REQ_TIME is returned as the desired time for judgment.
 - **Save Destination:** `T_HANTEI.URGENT_JUDGE_REQ_TIME`
 - **Validation:** `When the「急ぎサイン」(c16) is other than 「1=急」(1=urgent),input is not possible.`
 - **Options:** `N/A`
@@ -1096,12 +1064,11 @@
 
 - **Header Label:** `Attributes (Color-Coded) (属性（色分け）)`
 - **Data Type:** `TinyInt`
-- **Custom render:** `TinyInt`
+- **Custom render:** The attribute (color-coded) is fetched from the T_HANTEI table by matching the JUDGE_ID. The URGENT_ATTRIBUTE is returned as the attribute.
 - **Source:**
   ```sql
   SELECT URGENT_ATTRIBUTE FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
-- **Logic:** The attribute (color-coded) is fetched from the T_HANTEI table by matching the JUDGE_ID. The URGENT_ATTRIBUTE is returned as the attribute.
 - **Save Destination:** `T_HANTEI.URGENT_ATTRIBUTE`
 - **Validation:** `When 「急ぎサイン」(c16) is 「1=急」 (1=urgent), input required.`
 - **Options:** `N/A`
@@ -1310,12 +1277,11 @@
 
 - **Header Label:** `Whether Movement Ticket is Issued (移動票発行有無)`
 - **Data Type:** `Date`
-- **Custom render:** `Date`
+- **Custom render:** Whether the movement ticket is issued is fetched from the T_HANTEI table by matching the JUDGE_ID. The MOVE_TICKET_ISSUED is returned as the result.
 - **Source:**
   ```sql
   SELECT MOVE_TICKET_ISSUED FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
-- **Logic:** Whether the movement ticket is issued is fetched from the T_HANTEI table by matching the JUDGE_ID. The MOVE_TICKET_ISSUED is returned as the result.
 - **Save Destination:** `T_HANTEI.MOVE_TICKET_ISSUED`
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -1327,12 +1293,11 @@
 
 - **Header Label:** `Completion of Movement (移動完了有無)`
 - **Data Type:** `Date`
-- **Custom render:** `Date`
+- **Custom render:** The completion of movement is fetched from the T_HANTEI table by matching the JUDGE_ID. The MOVE_FINISHED is returned as the result.
 - **Source:**
   ```sql
   SELECT MOVE_FINISHED FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
-- **Logic:** The completion of movement is fetched from the T_HANTEI table by matching the JUDGE_ID. The MOVE_FINISHED is returned as the result.
 - **Save Destination:** `T_HANTEI.MOVE_FINISHED`
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -1344,12 +1309,11 @@
 
 - **Header Label:** `Judgment Report (成績書)`
 - **Data Type:** `TinyInt`
-- **Custom render:** `TinyInt`
+- **Custom render:** The status of the judgment report is fetched from the T_HANTEI table by matching the JUDGE_ID. The CERTIFICATE_STATUS is returned as the result.
 - **Source:**
   ```sql
   SELECT CERTIFICATE_STATUS FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
-- **Logic:** The status of the judgment report is fetched from the T_HANTEI table by matching the JUDGE_ID. The CERTIFICATE_STATUS is returned as the result.
 - **Save Destination:** `T_HANTEI.CERTIFICATE_STATUS`
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -1361,12 +1325,11 @@
 
 - **Header Label:** `Send Email (メール送信)`
 - **Data Type:** `TinyInt`
-- **Custom render:** `TinyInt`
+- **Custom render:** Whether an email has been sent is fetched from the T_HANTEI table by matching the JUDGE_ID. The SEND_MAIL_STATUS is returned as the result.
 - **Source:**
   ```sql
   SELECT SEND_MAIL_STATUS FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
-- **Logic:** Whether an email has been sent is fetched from the T_HANTEI table by matching the JUDGE_ID. The SEND_MAIL_STATUS is returned as the result.
 - **Save Destination:** `T_HANTEI.SEND_MAIL_STATUS`
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -1378,12 +1341,11 @@
 
 - **Header Label:** `Date of NETP Judgment (NETP判定日)`
 - **Data Type:** `Date`
-- **Custom render:** `Date`
+- **Custom render:**  The date of the NETP judgment is fetched from the T_HANTEI table by matching the JUDGE_ID. The NETP_JUDGE_DATE is returned as the result.
 - **Source:**
   ```sql
   SELECT NETP_JUDGE_DATE FROM T_HANTEI WHERE JUDGE_ID = :judge_id;
   ```
-- **Logic:** The date of the NETP judgment is fetched from the T_HANTEI table by matching the JUDGE_ID. The NETP_JUDGE_DATE is returned as the result.
 - **Save Destination:** `T_HANTEI.NETP_JUDGE_DATE`0
 - **Validation:** `If null,「未」(not yet) is displayed.`
 - **Options:** `N/A`
