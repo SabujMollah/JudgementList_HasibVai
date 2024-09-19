@@ -19,12 +19,14 @@
 
 - **Header Label:** `In-house/Outsourcing (内製/外製)`
 - **Data Type:** `TinyInt`
-- **Custom render:** By matching result with ITEM_NO, displays item that corresponds to either in-house or outsourcing, with the options defined as 0: 内製 (in-house) and 1: 外製 (outsourcing).
+- **Custom render:**
+  - Fetch items from `M_DISPLAY_ITEMS` (ITEM_NO=1)
+  - From `M_DISPLAY_ITEMS`, use VALUE as label for UI
 - **Source:**
- The in-house or outsourcing text value is selected from the M_DISPLAY_ITEM table. T_HANTEI table contains ITEM_NO, This ITEM_NO is available inside M_DISPLAY_ITEM table. By matching result with ITEM_NO  displays item that corresponds to either in-house or outsourcing, with the options defined as 0: 内製 (in-house) and 1: 外製 (outsourcing).
+  The in-house or outsourcing text value is selected from the M_DISPLAY_ITEM table. `T_HANTEI` table contains ITEM_NO, which is available inside the `M_DISPLAY_ITEM` table. By matching the result with ITEM_NO, it displays an item that corresponds to either in-house or outsourcing, with the options defined as: 0: 内製 (in-house), 1: 外製 (outsourcing)
 - **Save Destination:** `N/A` (Not editable)
-- **Validation:** show only text value from M_DISPLAY_ITEM table which is matched with T_HANTEI.ITEM_NO and M_DISPLAY_ITEM.ITEM_NO
-- **Options:** `0: 内製, 1: 外製`
+- **Validation:** Show only text values from the `M_DISPLAY_ITEM` table that are matched with `T_HANTEI.ITEM_NO` and `M_DISPLAY_ITEM.ITEM_NO`.
+- **Options:** `N/A`
 - **Remarks:** Displays whether the product is in-house or outsourced. Value is fixed at 0 for in-house.
 
 ---
@@ -35,7 +37,7 @@
 - **Data Type:** `Varchar`
 - **Custom render:** `String`
 - **Source:**
-  The reference item code is retrieved from the RSOS_V_JUDGE_PRODUCT table by matching the ITEM_ID. The ITEM_CODE is returned as the reference item CD.
+  The `ITEM_CODE` is retrieved from the `RSOS_V_JUDGE_PRODUCT` table by matching the `ITEM_ID`. The `ITEM_CODE` is returned as the reference item CD.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -49,7 +51,7 @@
 - **Data Type:** `Varchar`
 - **Custom render:** `String`
 - **Source:**
-  The production abbreviation is retrieved from the RSOS_V_JUDGE_PRODUCT table by matching the ITEM_ID. The PRODUCT_SHORT_NAME is returned as the production abbreviation.
+  The `PRODUCT_SHORT_NAME` is retrieved from the `RSOS_V_JUDGE_PRODUCT` table by matching the `ITEM_ID`. The PRODUCT_SHORT_NAME is returned as the production abbreviation.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -63,7 +65,7 @@
 - **Data Type:** `Varchar`
 - **Custom render:** `String`
 - **Source:**
-  The sales abbreviation is retrieved from the RSOS_V_JUDGE_PRODUCT table by matching the ITEM_ID. The SALES_SHORT_NAME is returned as the sales abbreviation.
+  The sales abbreviation is retrieved from the `RSOS_V_JUDGE_PRODUCT` table by matching the `ITEM_ID`. `The SALES_SHORT_NAME` is returned as the sales abbreviation.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -77,7 +79,7 @@
 - **Data Type:** `Varchar`
 - **Custom render:** `String`
 - **Source:**
- The lot number is fetched from the RSOS_V_JUDGE_PRODUCT table by matching the ITEM_ID. The LOT_NO is returned as the lot number.
+ The lot number is fetched from the `RSOS_V_JUDGE_PRODUCT` table by matching the `ITEM_ID`. The `LOT_NO` is returned as the lot number.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -89,9 +91,9 @@
 
 - **Header Label:** `Delivery Date (納品日)`
 - **Data Type:** `Date`
-- **Custom render:** `Date`
+- **Custom render:** `String(YYYY-MM-DD)`
 - **Source:**
-  The delivery date is fetched from the RSOS_T_PRODUCT_ORDER table by matching the ORDER_ID. The DELIVERY_DATE is returned as the delivery date.
+  The delivery date is fetched from the `RSOS_T_PRODUCT_ORDER` table by matching the `ORDER_ID`. The `DELIVERY_DATE` is returned as the delivery date.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -105,7 +107,7 @@
 - **Data Type:** `Varchar`
 - **Custom render:** `String`
 - **Source:**
-  The production building or outsourcing location is retrieved from the RSOS_V_JUDGE_PRODUCT table by matching the ITEM_ID. The PRODUCT_PLACE_NAME is returned as the location.
+  The production building or outsourcing location is retrieved from the `RSOS_V_JUDGE_PRODUCT` table by matching the `ITEM_ID`. The `PRODUCT_PLACE_NAME` is returned as the location.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -119,7 +121,7 @@
 - **Data Type:** `Varchar`
 - **Custom render:** `String`
 - **Source:**
-  The item name is fetched from the RSOS_V_JUDGE_PRODUCT table by matching the ITEM_ID. The ITEM_NAME is returned as the item name.
+  The item name is fetched from the `RSOS_V_JUDGE_PRODUCT` table by matching the `ITEM_ID`. The `ITEM_NAME` is returned as the item name.
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -131,9 +133,21 @@
 
 - **Header Label:** `Date of Dispensing (調合日)`
 - **Data Type:** `Date`
-- **Custom render:** `Date`
+- **Custom render:** `String(YYYY-MM-DD)`
 - **Source:**
    The date of dispensing is acquired through recursive processing based on the item’s order code from `RSOS_T_ORDERS_RELATION`, `RSOS_T_PRODUCT_RECORD`, and `RSOS_T_PRODUCT_ORDER`. It considers the maximum `END_DATE` from `RSOS_T_PRODUCT_RECORD` or `END_SCH_DATE` from `RSOS_T_PRODUCT_ORDER` where the process type in `RSOS_M_PROCESSES` is '1'.
+   ```sql
+  (SELECT JSON_OBJECT(
+                        'c10', MAX(CASE WHEN KO.PROCESS_TYPE = '1' THEN IFNULL(SJ.END_DATE, SO.END_SCH_DATE) ELSE NULL END)                      
+                    ) FROM RSOS_T_ORDERS_RELATION r
+                    LEFT JOIN RSOS_T_PRODUCT_RECORD SJ ON r.PRE_ORDER_CODE = SJ.ORDER_CODE
+                    LEFT JOIN RSOS_T_PRODUCT_ORDER SO ON r.PRE_ORDER_CODE = SO.ORDER_CODE
+                    LEFT JOIN RSOS_M_PROCESSES KO ON SO.PLANT_ITEM_CODE = KO.GRAPH_CODE
+                        AND SO.OPERATION_ORG_DIV = KO.GRAPH_SELECTOR
+                        AND SO.PROC_CODE = KO.PROC_CODE
+                    WHERE r.FLW_ORDER_CODE = RSOS_V_JUDGE_PRODUCT.ORDER_CODE
+                    ) AS process_dates
+  ```
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -145,10 +159,21 @@
 
 - **Header Label:** `Filling Date (充填日)`
 - **Data Type:** `Date`
-- **Custom render:** `Date`
+- **Custom render:** `String(YYYY-MM-DD)`
 - **Source:**
    The filling date is acquired through recursive processing based on the item’s order code from `RSOS_T_ORDERS_RELATION`, `RSOS_T_PRODUCT_RECORD`, and `RSOS_T_PRODUCT_ORDER`. It considers the maximum `END_DATE` from `RSOS_T_PRODUCT_RECORD` or `END_SCH_DATE` from `RSOS_T_PRODUCT_ORDER` where the process type in `RSOS_M_PROCESSES` is '2'.
-
+   ```sql
+  (SELECT JSON_OBJECT(                    
+                        'c11', MAX(CASE WHEN KO.PROCESS_TYPE = '2' THEN IFNULL(SJ.END_DATE, SO.END_SCH_DATE) ELSE NULL END),
+                    ) FROM RSOS_T_ORDERS_RELATION r
+                    LEFT JOIN RSOS_T_PRODUCT_RECORD SJ ON r.PRE_ORDER_CODE = SJ.ORDER_CODE
+                    LEFT JOIN RSOS_T_PRODUCT_ORDER SO ON r.PRE_ORDER_CODE = SO.ORDER_CODE
+                    LEFT JOIN RSOS_M_PROCESSES KO ON SO.PLANT_ITEM_CODE = KO.GRAPH_CODE
+                        AND SO.OPERATION_ORG_DIV = KO.GRAPH_SELECTOR
+                        AND SO.PROC_CODE = KO.PROC_CODE
+                    WHERE r.FLW_ORDER_CODE = RSOS_V_JUDGE_PRODUCT.ORDER_CODE
+                    ) AS process_dates
+  ```
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -160,9 +185,21 @@
 
 - **Header Label:** `Packing Date (包装日)`
 - **Data Type:** `Date`
-- **Custom render:** `Date`
+- **Custom render:** `String(YYYY-MM-DD)`
 - **Source:**  
   The packing date is acquired through recursive processing based on the item’s order code from `RSOS_T_ORDERS_RELATION`, `RSOS_T_PRODUCT_RECORD`, and `RSOS_T_PRODUCT_ORDER`. It considers the maximum `END_DATE` from `RSOS_T_PRODUCT_RECORD` or `END_SCH_DATE` from `RSOS_T_PRODUCT_ORDER` where the process type in `RSOS_M_PROCESSES` is '3'.
+  ```sql
+  (SELECT JSON_OBJECT(
+                        'c12', MAX(CASE WHEN KO.PROCESS_TYPE = '3' THEN IFNULL(SJ.END_DATE, SO.END_SCH_DATE) ELSE NULL END)
+                    ) FROM RSOS_T_ORDERS_RELATION r
+                    LEFT JOIN RSOS_T_PRODUCT_RECORD SJ ON r.PRE_ORDER_CODE = SJ.ORDER_CODE
+                    LEFT JOIN RSOS_T_PRODUCT_ORDER SO ON r.PRE_ORDER_CODE = SO.ORDER_CODE
+                    LEFT JOIN RSOS_M_PROCESSES KO ON SO.PLANT_ITEM_CODE = KO.GRAPH_CODE
+                        AND SO.OPERATION_ORG_DIV = KO.GRAPH_SELECTOR
+                        AND SO.PROC_CODE = KO.PROC_CODE
+                    WHERE r.FLW_ORDER_CODE = RSOS_V_JUDGE_PRODUCT.ORDER_CODE
+                    ) AS process_dates
+  ```
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -188,7 +225,7 @@
 
 - **Header Label:** `Usual Judgment Day (通常判定日)`
 - **Data Type:** `Date`
-- **Custom render:** `Date`
+- **Custom render:** `String(YYYY-MM-DD)`
 - **Source:**  
   The usual judgment day is fetched from the `RSOS_V_JUDGE_PRODUCT` table by matching the `ITEM_ID`. It returns the `SHIP_JUDGE_SCH_DATE` as the judgment day.
 - **Save Destination:** `N/A` (Not editable)
@@ -216,9 +253,11 @@
 
 - **Header Label:** `Urgent Sign (急ぎサイン)`
 - **Data Type:** `TinyInt`
-- **Custom render:** Urgent Sign(TinyInt) will retrun Urgent Sign(string) from `M_DISPLAY_ITEM`
+- **Custom render:** 
+  - Fetch items from `M_DISPLAY_ITEMS` (ITEM_NO=2)
+  - From `M_DISPLAY_ITEMS`, use VALUE as label for UI
 - **Source:**  
-  The urgent sign is fetched from the `T_HANTEI` table by matching the `JUDGE_ID`. It returns `URGENT_TYPE`, this will return `TinyInt` value then need to string accoring to Urgent sign from `M_DISPLAY_ITEM` using `URGENT_TYPE`.
+  The urgent sign is fetched from the `T_HANTEI` table by matching the `ITEM_NO`. It returns `URGENT_TYPE`.
 - **Save Destination:** `T_HANTEI.URGENT_TYPE`
 - **Validation:** `Input required when急ぎ依頼日(the date of urgent request), 急ぎ判定希望日(desired date of urgent judgment)・希望時間(desired time for urgent judgment)are input.`
 - **Options:** `N/A`
@@ -230,9 +269,9 @@
 
 - **Header Label:** `Urgent Request Date (急ぎ依頼日)`
 - **Data Type:** `Date`
-- **Custom render:** `Date`
+- **Custom render:** `String(YYYY-MM-DD)`
 - **Source:**  
-  The urgent request date is fetched from the `T_HANTEI` table by matching the `JUDGE_ID`. It returns `URGENT_REQ_DATE`.
+  The urgent request date is fetched from the `T_HANTEI` table by matching the `ITEM_NO`. It returns `URGENT_REQ_DATE`.
 - **Save Destination:** `T_HANTEI.URGENT_REQ_DATE`
 - **Validation:** `Set today's date when setting「急ぎサイン」(c16). Required when input 「急ぎサイン」(c16).`
 - **Options:** `N/A`
@@ -244,9 +283,9 @@
 
 - **Header Label:** `Desired Date of Urgent Judgment (急ぎ判定希望日)`
 - **Data Type:** `Date`
-- **Custom render:** `Date`
+- **Custom render:** `String(YYYY-MM-DD)`
 - **Source:**  
-  The desired date of urgent judgment is fetched from the `T_HANTEI` table by matching the `JUDGE_ID`. It returns `URGENT_JUDGE_REQ_DATE`.
+  The desired date of urgent judgment is fetched from the `T_HANTEI` table by matching the `ITEM_NO`. It returns `URGENT_JUDGE_REQ_DATE`.
 - **Save Destination:** `T_HANTEI.URGENT_JUDGE_REQ_DATE`
 - **Validation:** `When the「急ぎサイン」(c16) is other than 「1=急」(1=urgent), input is not possible. Required when「急ぎサイン」(c16) is「1=急」(1=urgent).`
 - **Options:** `N/A`
@@ -258,9 +297,11 @@
 
 - **Header Label:** `Desired Time for Urgent Judgment (急ぎ判定希望時間)`
 - **Data Type:** `TinyInt`
-- **Custom render:** `TinyInt`
+- **Custom render:** 
+  - Fetch items from `M_DISPLAY_ITEMS` (ITEM_NO=4)
+  - From `M_DISPLAY_ITEMS`, use VALUE as label for UI
 - **Source:**  
-  The desired time for urgent judgment is fetched from the `T_HANTEI` table by matching the `JUDGE_ID`. It returns `URGENT_JUDGE_REQ_TIME`.
+  The desired time for urgent judgment is fetched from the `T_HANTEI` table by matching the `ITEM_NO`. It returns `URGENT_JUDGE_REQ_TIME`.
 - **Save Destination:** `T_HANTEI.URGENT_JUDGE_REQ_TIME`
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -286,7 +327,7 @@
 
 - **Header Label:** `Revision Judgment Date (修正判定日)`
 - **Data Type:** `Date`
-- **Custom render:** `Date`
+- **Custom render:** `String(YYYY-MM-DD)`
 - **Source:**  
   The revision judgment date is fetched from the `T_RESPONSE` table by matching the `RESPONSE_ID`. It returns `URGENT_JUDGE_RESP_ANS_DATE`.
 - **Save Destination:** `N/A` (Not editable)
@@ -294,19 +335,6 @@
 - **Options:** `N/A`
 - **Remarks:** Displays the revision judgment date, fetched from the `T_RESPONSE` table.
 
----
-
-### c22: **Revision Judgment Time (修正判定時間)**
-
-- **Header Label:** `Revision Judgment Time (修正判定時間)`
-- **Data Type:** `TinyInt`
-- **Custom render:** `TinyInt`
-- **Source:**  
-  The revision judgment time is fetched from the `T_RESPONSE` table by matching the `RESPONSE_ID`. It returns `URGENT_JUDGE_RESP_ANS_TIME`.
-- **Save Destination:** `N/A` (Not editable)
-- **Validation:** `N/A`
-- **Options:** `N/A`
-- **Remarks:** Displays the revision judgment time, fetched from the `T_RESPONSE` table.
 
 ---
 
@@ -314,9 +342,11 @@
 
 - **Header Label:** `Attributes (Color-Coded) (属性（色分け）)`
 - **Data Type:** `TinyInt`
-- **Custom render:** `TinyInt`
+- **Custom render:** 
+  - Fetch items from `M_DISPLAY_ITEMS` (ITEM_NO=12)
+  - From `M_DISPLAY_ITEMS`, use VALUE as label for UI
 - **Source:**  
-  The attributes are fetched from the `T_HANTEI` table by matching the `JUDGE_ID`. It returns `URGENT_ATTRIBUTE`.
+  The attributes are fetched from the `T_HANTEI` table by matching the `ITEM_NO`. It returns `URGENT_ATTRIBUTE`.
 - **Save Destination:** `T_HANTEI.URGENT_ATTRIBUTE`
 - **Validation:** `When「急ぎサイン」(c16) is 「1=急」 (1=urgent), input required.`
 - **Options:** `N/A`
@@ -328,11 +358,93 @@
 
 - **Header Label:** `Desired Movement Date (移動希望日)`
 - **Data Type:** `Date`
-- **Custom render:** `Date`
+- **Custom render:** `String(YYYY-MM-DD)`
 - **Source:**  
-
-
-  The desired movement date is calculated using logic based on the plant division name, urgent type, and other factors. It uses the calendar (`ERP_CALEM`) and the maximum date after considering the relevant conditions.
+  - If the plant division name in the RSOS_V_JUDGE_PRODUCT table is '大阪' and the urgent type in the T_HANTEI table is 1, check if the plant division name or location in the T_HANTEI or RSOS_M_LOCATION tables is either '梅田倉庫' or 'トランスシティ'.
+  - If the condition is met, and the response answer date (URGENT_JUDGE_RESP_ANS_DATE) in the T_RESPONSE table or the urgent judge request date (URGENT_JUDGE_REQ_DATE) in the T_HANTEI table exists, calculate the maximum date (FDATE) from the ERP_CALEM table where the date (FDATE) is greater than either the response answer date or request date, considering working days (FHOLIDAYFLG = 'W').
+  - If the plant division is '上野工場' or not '大阪', no movement date is calculated.
+  - If the urgent type in the T_HANTEI table is not 1, calculate based on other conditions by considering plant division name or location and response time from the T_RESPONSE table.
+  ```sql
+  CASE
+                        WHEN RSOS_V_JUDGE_PRODUCT.PLANT_DIVISION_NAME = '大阪' AND T_HANTEI.URGENT_TYPE = 1 THEN
+                            CASE
+                                WHEN COALESCE(T_HANTEI.PLANT_DIVISION_NAME, RSOS_M_LOCATION.LOCATION_NAME) IN ('梅田倉庫', 'トランスシティ') THEN
+                                    CASE
+                                        WHEN
+                                            (CASE
+                                                WHEN T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE IS NOT NULL THEN T_RESPONSE.URGENT_JUDGE_RESP_ANS_TIME
+                                                WHEN T_HANTEI.URGENT_JUDGE_REQ_DATE IS NOT NULL THEN T_HANTEI.URGENT_JUDGE_REQ_TIME
+                                                ELSE 0
+                                            END) = 1 THEN
+                                            (SELECT MAX(FDATE) FROM (SELECT FDATE FROM ERP_CALEM WHERE FCALETYP = 'A' AND FDATE > COALESCE(T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE,
+                            T_HANTEI.URGENT_JUDGE_REQ_DATE,
+                            RSOS_V_JUDGE_PRODUCT.SHIP_JUDGE_SCH_DATE) AND FHOLIDAYFLG = 'W' ORDER BY FDATE ASC LIMIT 1) AS DATE_LIST)
+                                        ELSE
+                                            (SELECT MAX(FDATE) FROM (SELECT FDATE FROM ERP_CALEM WHERE FCALETYP = 'A' AND FDATE > COALESCE(T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE,
+                            T_HANTEI.URGENT_JUDGE_REQ_DATE,
+                            RSOS_V_JUDGE_PRODUCT.SHIP_JUDGE_SCH_DATE) AND FHOLIDAYFLG = 'W' ORDER BY FDATE ASC LIMIT 2) AS DATE_LIST)
+                                    END
+                                ELSE
+                                    CASE
+                                        WHEN
+                                            (CASE
+                                                WHEN T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE IS NOT NULL THEN T_RESPONSE.URGENT_JUDGE_RESP_ANS_TIME
+                                                WHEN T_HANTEI.URGENT_JUDGE_REQ_DATE IS NOT NULL THEN T_HANTEI.URGENT_JUDGE_REQ_TIME
+                                                ELSE 0
+                                            END) = 1 THEN
+                                            COALESCE(T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE,
+                            T_HANTEI.URGENT_JUDGE_REQ_DATE,
+                            RSOS_V_JUDGE_PRODUCT.SHIP_JUDGE_SCH_DATE)
+                                        ELSE
+                                            (SELECT MAX(FDATE) FROM (SELECT FDATE FROM ERP_CALEM WHERE FCALETYP = 'A' AND FDATE > COALESCE(T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE,
+                            T_HANTEI.URGENT_JUDGE_REQ_DATE,
+                            RSOS_V_JUDGE_PRODUCT.SHIP_JUDGE_SCH_DATE) AND FHOLIDAYFLG = 'W' ORDER BY FDATE ASC LIMIT 1) AS DATE_LIST)
+                                    END
+                            END
+                        WHEN RSOS_V_JUDGE_PRODUCT.PLANT_DIVISION_NAME = '上野工場' OR RSOS_V_JUDGE_PRODUCT.PLANT_DIVISION_NAME <> '大阪' THEN
+                            NULL
+                        ELSE
+                            CASE
+                                WHEN T_HANTEI.URGENT_TYPE != 1 THEN
+                                    CASE
+                                        WHEN COALESCE(T_HANTEI.PLANT_DIVISION_NAME, RSOS_M_LOCATION.LOCATION_NAME) IN ('梅田倉庫', 'トランスシティ') THEN
+                                            CASE
+                                                WHEN
+                                                    (CASE
+                                                        WHEN T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE IS NOT NULL THEN T_RESPONSE.URGENT_JUDGE_RESP_ANS_TIME
+                                                        WHEN T_HANTEI.URGENT_JUDGE_REQ_DATE IS NOT NULL THEN T_HANTEI.URGENT_JUDGE_REQ_TIME
+                                                        ELSE 0
+                                                    END) = 1 THEN
+                                                    (SELECT MAX(FDATE) FROM (SELECT FDATE FROM ERP_CALEM WHERE FCALETYP = 'A' AND FDATE > COALESCE(T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE,
+                            T_HANTEI.URGENT_JUDGE_REQ_DATE,
+                            RSOS_V_JUDGE_PRODUCT.SHIP_JUDGE_SCH_DATE) AND FHOLIDAYFLG = 'W' ORDER BY FDATE ASC LIMIT 2) AS DATE_LIST)
+                                                ELSE
+                                                    (SELECT MAX(FDATE) FROM (SELECT FDATE FROM ERP_CALEM WHERE FCALETYP = 'A' AND FDATE > COALESCE(T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE,
+                            T_HANTEI.URGENT_JUDGE_REQ_DATE,
+                            RSOS_V_JUDGE_PRODUCT.SHIP_JUDGE_SCH_DATE) AND FHOLIDAYFLG = 'W' ORDER BY FDATE ASC LIMIT 3) AS DATE_LIST)
+                                            END
+                                        ELSE
+                                            CASE
+                                                WHEN
+                                                    (CASE
+                                                        WHEN T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE IS NOT NULL THEN T_RESPONSE.URGENT_JUDGE_RESP_ANS_TIME
+                                                        WHEN T_HANTEI.URGENT_JUDGE_REQ_DATE IS NOT NULL THEN T_HANTEI.URGENT_JUDGE_REQ_TIME
+                                                        ELSE 0
+                                                    END) = 1 THEN
+                                                    (SELECT MAX(FDATE) FROM (SELECT FDATE FROM ERP_CALEM WHERE FCALETYP = 'A' AND FDATE > COALESCE(T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE,
+                            T_HANTEI.URGENT_JUDGE_REQ_DATE,
+                            RSOS_V_JUDGE_PRODUCT.SHIP_JUDGE_SCH_DATE) AND FHOLIDAYFLG = 'W' ORDER BY FDATE ASC LIMIT 1) AS DATE_LIST)
+                                                ELSE
+                                                    (SELECT MAX(FDATE) FROM (SELECT FDATE FROM ERP_CALEM WHERE FCALETYP = 'A' AND FDATE > COALESCE(T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE,
+                            T_HANTEI.URGENT_JUDGE_REQ_DATE,
+                            RSOS_V_JUDGE_PRODUCT.SHIP_JUDGE_SCH_DATE) AND FHOLIDAYFLG = 'W' ORDER BY FDATE ASC LIMIT 2) AS DATE_LIST)
+                                            END
+                                    END
+                                ELSE
+                                    NULL
+                            END
+                    END AS MOVE_REQ_DATE
+  ```
 - **Save Destination:** `T_HANTEI.MOVE_REQ_DATE`
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -344,9 +456,70 @@
 
 - **Header Label:** `Evening Packing・Morning Delivery Sign (宵積サイン)`
 - **Data Type:** `TinyInt`
-- **Custom render:** `TinyInt`
+- **Custom render:** `String(AM/PM)` 1= AM, 0=PM
 - **Source:**  
-  The evening packing or morning delivery sign is calculated based on the plant division name and urgent type. It considers various factors, including response times and plant locations, and returns either a 0 or 1.
+   1. If the plant division name in the `RSOS_V_JUDGE_PRODUCT` table is '大阪' and the urgent type in the `T_HANTEI` table is 1, then:
+     - Check if the plant division name or location in the `T_HANTEI` or `RSOS_M_LOCATION` tables is either '梅田倉庫' or 'トランスシティ'.
+     - If the response answer date (`URGENT_JUDGE_RESP_ANS_DATE`) in the `T_RESPONSE` table or the urgent judge request date (`URGENT_JUDGE_REQ_DATE`) in the `T_HANTEI` table is present and the response answer time or request time is 1, then return 0; otherwise, return 1.
+  
+  2. If the plant division name in the `RSOS_V_JUDGE_PRODUCT` table is '上野工場' or any value other than '大阪', return 0.
+
+  3. If the urgent type in the `T_HANTEI` table is not 1, similar logic is applied based on the plant division name, urgent judge request date, and response times from the `T_RESPONSE` table.
+
+  This logic uses data from `RSOS_V_JUDGE_PRODUCT`, `T_HANTEI`, `T_RESPONSE`, and `RSOS_M_LOCATION` tables to determine if the evening packing or morning delivery sign should be flagged (0 or 1).
+  ```sql
+  CASE
+                        WHEN RSOS_V_JUDGE_PRODUCT.PLANT_DIVISION_NAME = '大阪' AND T_HANTEI.URGENT_TYPE = 1 THEN
+                            CASE
+                                WHEN COALESCE(T_HANTEI.PLANT_DIVISION_NAME, RSOS_M_LOCATION.LOCATION_NAME) IN ('梅田倉庫', 'トランスシティ') THEN
+                                    CASE
+                                        WHEN
+                                            (CASE
+                                                WHEN T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE IS NOT NULL THEN T_RESPONSE.URGENT_JUDGE_RESP_ANS_TIME
+                                                WHEN T_HANTEI.URGENT_JUDGE_REQ_DATE IS NOT NULL THEN T_HANTEI.URGENT_JUDGE_REQ_TIME
+                                                ELSE 0
+                                            END) = 1 THEN 0 ELSE 0
+                                    END
+                                ELSE
+                                    CASE
+                                        WHEN
+                                            (CASE
+                                                WHEN T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE IS NOT NULL THEN T_RESPONSE.URGENT_JUDGE_RESP_ANS_TIME
+                                                WHEN T_HANTEI.URGENT_JUDGE_REQ_DATE IS NOT NULL THEN T_HANTEI.URGENT_JUDGE_REQ_TIME
+                                                ELSE 0
+                                            END) = 1 THEN 1 ELSE 0
+                                    END
+                            END
+                        WHEN RSOS_V_JUDGE_PRODUCT.PLANT_DIVISION_NAME = '上野工場' OR RSOS_V_JUDGE_PRODUCT.PLANT_DIVISION_NAME <> '大阪' THEN
+                            0
+                        ELSE
+                            CASE
+                                WHEN T_HANTEI.URGENT_TYPE != 1 THEN
+                                    CASE
+                                        WHEN COALESCE(T_HANTEI.PLANT_DIVISION_NAME, RSOS_M_LOCATION.LOCATION_NAME) IN ('梅田倉庫', 'トランスシティ') THEN
+                                            CASE
+                                                WHEN
+                                                    (CASE
+                                                        WHEN T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE IS NOT NULL THEN T_RESPONSE.URGENT_JUDGE_RESP_ANS_TIME
+                                                        WHEN T_HANTEI.URGENT_JUDGE_REQ_DATE IS NOT NULL THEN T_HANTEI.URGENT_JUDGE_REQ_TIME
+                                                        ELSE 0
+                                                    END) = 1 THEN 0 ELSE 0
+                                            END
+                                        ELSE
+                                            CASE
+                                                WHEN
+                                                    (CASE
+                                                        WHEN T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE IS NOT NULL THEN T_RESPONSE.URGENT_JUDGE_RESP_ANS_TIME
+                                                        WHEN T_HANTEI.URGENT_JUDGE_REQ_DATE IS NOT NULL THEN T_HANTEI.URGENT_JUDGE_REQ_TIME
+                                                        ELSE 0
+                                                    END) = 1 THEN 1 ELSE 0
+                                            END
+                                    END
+                                ELSE
+                                    0
+                            END
+                    END AS VESPER_FLAG
+  ```
 - **Save Destination:** `T_HANTEI.VESPER_FLAG`
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -358,9 +531,54 @@
 
 - **Header Label:** `Usual Available Date for Shipment (通常出荷可能日)`
 - **Data Type:** `Date`
-- **Custom render:** `Date`
+- **Custom render:** `String(YYYY-MM-DD)`
 - **Source:**  
-  The usual available date for shipment is calculated based on the plant division and calendar (`ERP_CALEM`). It returns the maximum available date after considering the conditions for shipment.
+   1. If the plant division name in the `RSOS_V_JUDGE_PRODUCT` table is '上野' and the `RSOS_T_PRODUCT_ORDER.OPERATION_ORG_DIV` matches the operation org division in the `M_BUILDING_C` table:
+     - Select the maximum future date (`FDATE`) from the `ERP_CALEM` table, where the calendar type (`FCALETYP`) is 'A', the date is after the scheduled shipment judge date (`SHIP_JUDGE_SCH_DATE`) from `RSOS_V_JUDGE_PRODUCT`, and the holiday flag (`FHOLIDAYFLG`) is 'W'.
+     - Limit the result to the first 6 dates.
+
+  2. If the plant division name in the `RSOS_V_JUDGE_PRODUCT` table is '大阪':
+     - Select the maximum future date (`FDATE`) from the `ERP_CALEM` table, where the conditions are the same as above but limit the result to the first 3 dates.
+
+  3. For all other plant division names:
+     - Select the maximum future date (`FDATE`) from the `ERP_CALEM` table, where the conditions are the same as above but limit the result to the first 2 dates.
+  ```sql
+  CASE
+                        WHEN RSOS_V_JUDGE_PRODUCT.PLANT_DIVISION_NAME = '上野'
+                            AND RSOS_T_PRODUCT_ORDER.OPERATION_ORG_DIV = (SELECT OPERATION_ORG_DIV FROM M_BUILDING_C WHERE RSOS_T_PRODUCT_ORDER.OPERATION_ORG_DIV = M_BUILDING_C.OPERATION_ORG_DIV)
+                        THEN (
+                            SELECT MAX(FDATE) FROM (
+                                SELECT FDATE FROM ERP_CALEM
+                                WHERE FCALETYP = 'A'
+                                AND FDATE > RSOS_V_JUDGE_PRODUCT.SHIP_JUDGE_SCH_DATE
+                                AND FHOLIDAYFLG = 'W'
+                                ORDER BY FDATE ASC
+                                LIMIT 6
+                            ) AS DATE_LIST
+                        )
+                        WHEN RSOS_V_JUDGE_PRODUCT.PLANT_DIVISION_NAME = '大阪' THEN (
+                            SELECT MAX(FDATE) FROM (
+                                SELECT FDATE FROM ERP_CALEM
+                                WHERE FCALETYP = 'A'
+                                AND FDATE > RSOS_V_JUDGE_PRODUCT.SHIP_JUDGE_SCH_DATE
+                                AND FHOLIDAYFLG = 'W'
+                                ORDER BY FDATE ASC
+                                LIMIT 3
+                            ) AS DATE_LIST
+                        )
+                        ELSE (
+                            SELECT MAX(FDATE) FROM (
+                                SELECT FDATE FROM ERP_CALEM
+                                WHERE FCALETYP = 'A'
+                                AND FDATE > RSOS_V_JUDGE_PRODUCT.SHIP_JUDGE_SCH_DATE
+                                AND FHOLIDAYFLG = 'W'
+                                ORDER BY FDATE ASC
+                                LIMIT 2
+                            ) AS DATE_LIST
+                        )
+                    END AS c26
+  ```
+
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -372,9 +590,45 @@
 
 - **Header Label:** `Available Date for Express Shipment (急ぎ出荷可能日)`
 - **Data Type:** `Date`
-- **Custom render:** `Date`
+- **Custom render:** `String(YYYY-MM-DD)`
 - **Source:**  
-  The available date for express shipment is calculated based on the plant division and response times. It uses the calendar (`ERP_CALEM`) to determine the maximum date considering urgency and shipment conditions.
+  1. If the plant division name in the `RSOS_V_JUDGE_PRODUCT` table is either '大阪' or '上野' and the `RSOS_T_PRODUCT_ORDER.OPERATION_ORG_DIV` matches the operation org division in the `M_BUILDING_C` table:
+     - If `T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE` is not null, use the `T_RESPONSE.URGENT_JUDGE_RESP_ANS_TIME`. If `T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE` is null but `T_HANTEI.URGENT_JUDGE_REQ_DATE` is available, use `T_HANTEI.URGENT_JUDGE_REQ_TIME`.
+     - If the urgent judgment response time is 1, select the maximum future date (`FDATE`) from the `ERP_CALEM` table, where the calendar type (`FCALETYP`) is 'A', the date is after the urgent judgment response or request date (`T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE` or `T_HANTEI.URGENT_JUDGE_REQ_DATE`), and the holiday flag (`FHOLIDAYFLG`) is 'W'. Limit the result to the first 1 date.
+     - Otherwise, limit the result to the first 2 dates.
+
+  2. For all other plant division names:
+     - If the urgent judgment response time is 1, select the maximum future date (`FDATE`) from the `ERP_CALEM` table, where the same conditions apply but limit the result to the first 2 dates.
+     - Otherwise, limit the result to the first 3 dates.
+  ```sql
+  CASE
+                        WHEN RSOS_V_JUDGE_PRODUCT.PLANT_DIVISION = '大阪' OR
+                            (RSOS_V_JUDGE_PRODUCT.PLANT_DIVISION = '上野' AND
+                            RSOS_T_PRODUCT_ORDER.OPERATION_ORG_DIV = (SELECT OPERATION_ORG_DIV FROM M_BUILDING_C WHERE RSOS_T_PRODUCT_ORDER.OPERATION_ORG_DIV = M_BUILDING_C.OPERATION_ORG_DIV))
+                        THEN
+                            CASE
+                                WHEN (CASE
+                                            WHEN T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE IS NOT NULL THEN T_RESPONSE.URGENT_JUDGE_RESP_ANS_TIME
+                                            WHEN T_HANTEI.URGENT_JUDGE_REQ_DATE IS NOT NULL THEN T_HANTEI.URGENT_JUDGE_REQ_TIME
+                                            ELSE 0
+                                        END) = 1 THEN
+                                    (SELECT MAX(FDATE) FROM (SELECT FDATE FROM ERP_CALEM WHERE FCALETYP = 'A' AND FDATE > COALESCE(T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE, T_HANTEI.URGENT_JUDGE_REQ_DATE) AND FHOLIDAYFLG = 'W' ORDER BY FDATE ASC LIMIT 1) AS DATE_LIST)
+                                ELSE
+                                    (SELECT MAX(FDATE) FROM (SELECT FDATE FROM ERP_CALEM WHERE FCALETYP = 'A' AND FDATE > COALESCE(T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE, T_HANTEI.URGENT_JUDGE_REQ_DATE) AND FHOLIDAYFLG = 'W' ORDER BY FDATE ASC LIMIT 2) AS DATE_LIST)
+                            END
+                        ELSE
+                            CASE
+                                WHEN (CASE
+                                            WHEN T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE IS NOT NULL THEN T_RESPONSE.URGENT_JUDGE_RESP_ANS_TIME
+                                            WHEN T_HANTEI.URGENT_JUDGE_REQ_DATE IS NOT NULL THEN T_HANTEI.URGENT_JUDGE_REQ_TIME
+                                            ELSE 0
+                                        END) = 1 THEN
+                                    (SELECT MAX(FDATE) FROM (SELECT FDATE FROM ERP_CALEM WHERE FCALETYP = 'A' AND FDATE > COALESCE(T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE, T_HANTEI.URGENT_JUDGE_REQ_DATE) AND FHOLIDAYFLG = 'W' ORDER BY FDATE ASC LIMIT 2) AS DATE_LIST)
+                                ELSE
+                                    (SELECT MAX(FDATE) FROM (SELECT FDATE FROM ERP_CALEM WHERE FCALETYP = 'A' AND FDATE > COALESCE(T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE, T_HANTEI.URGENT_JUDGE_REQ_DATE) AND FHOLIDAYFLG = 'W' ORDER BY FDATE ASC LIMIT 3) AS DATE_LIST)
+                            END
+                    END AS c27
+  ```
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -386,7 +640,7 @@
 
 - **Header Label:** `Available Date for Loose Shipment (緩め出荷可能日)`
 - **Data Type:** `Date`
-- **Custom render:** `Date`
+- **Custom render:** `String(YYYY-MM-DD)`
 - **Source:**  
   The available date for loose shipment is fetched from the `T_NONURGENT_SHIPMENT` table by matching the `SHIPMENT_ID`. It returns the `LATE_SHIP_POSSIBLE_DATE`.
 - **Save Destination:** `N/A` (Not editable)
@@ -400,9 +654,53 @@
 
 - **Header Label:** `Desired Date of Loose Judgment (緩め判定希望日)`
 - **Data Type:** `Date`
-- **Custom render:** `Date`
+- **Custom render:** `String(YYYY-MM-DD)`
 - **Source:**  
-  The desired date of loose judgment is calculated based on the `T_NONURGENT_SHIPMENT` table and the plant division. It uses the calendar (`ERP_CALEM`) to determine the maximum date before the late ship possible date.
+  1. If `T_NONURGENT_SHIPMENT.LATE_SHIP_POSSIBLE_DATE` is `NULL`, the result is `NULL`.
+  
+  2. If `T_NONURGENT_SHIPMENT.LATE_SHIP_POSSIBLE_DATE` is not `NULL` and the plant division in `RSOS_V_JUDGE_PRODUCT` is '大阪':
+     - Select the maximum future date (`FDATE`) from the `ERP_CALEM` table, where the calendar type (`FCALETYP`) is 'A', the date is on or before the late ship possible date (`T_NONURGENT_SHIPMENT.LATE_SHIP_POSSIBLE_DATE`), and the holiday flag (`FHOLIDAYFLG`) is 'W'. Limit the result to the last 3 dates.
+  
+  3. If `T_NONURGENT_SHIPMENT.LATE_SHIP_POSSIBLE_DATE` is not `NULL` and the plant division in `RSOS_V_JUDGE_PRODUCT` is '上野':
+     - Select the maximum future date (`FDATE`) from the `ERP_CALEM` table under the same conditions as above, but limit the result to the last 6 dates.
+  
+  4. For all other cases where `T_NONURGENT_SHIPMENT.LATE_SHIP_POSSIBLE_DATE` is not `NULL`:
+     - Select the maximum future date (`FDATE`) from the `ERP_CALEM` table, but limit the result to the last 2 dates.
+  ```sql
+  CASE
+                        WHEN T_NONURGENT_SHIPMENT.LATE_SHIP_POSSIBLE_DATE IS NULL THEN NULL
+                        WHEN T_NONURGENT_SHIPMENT.LATE_SHIP_POSSIBLE_DATE IS NOT NULL AND RSOS_V_JUDGE_PRODUCT.PLANT_DIVISION = '大阪' THEN (
+                            SELECT MAX(FDATE) FROM (
+                                SELECT FDATE FROM ERP_CALEM
+                                WHERE FCALETYP = 'A'
+                                AND FDATE <= T_NONURGENT_SHIPMENT.LATE_SHIP_POSSIBLE_DATE
+                                AND FHOLIDAYFLG = 'W'
+                                ORDER BY FDATE DESC
+                                LIMIT 3
+                            ) AS DATE_LIST
+                        )
+                        WHEN T_NONURGENT_SHIPMENT.LATE_SHIP_POSSIBLE_DATE IS NOT NULL AND RSOS_V_JUDGE_PRODUCT.PLANT_DIVISION = '上野' THEN (
+                            SELECT MAX(FDATE) FROM (
+                                SELECT FDATE FROM ERP_CALEM
+                                WHERE FCALETYP = 'A'
+                                AND FDATE <= T_NONURGENT_SHIPMENT.LATE_SHIP_POSSIBLE_DATE
+                                AND FHOLIDAYFLG = 'W'
+                                ORDER BY FDATE DESC
+                                LIMIT 6
+                            ) AS DATE_LIST
+                        )
+                        ELSE (
+                            SELECT MAX(FDATE) FROM (
+                                SELECT FDATE FROM ERP_CALEM
+                                WHERE FCALETYP = 'A'
+                                AND FDATE <= T_NONURGENT_SHIPMENT.LATE_SHIP_POSSIBLE_DATE
+                                AND FHOLIDAYFLG = 'W'
+                                ORDER BY FDATE DESC
+                                LIMIT 2
+                            ) AS DATE_LIST
+                        )
+                    END AS c29
+  ```
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `When the「急ぎサイン」(c16) is other than 「2=緩」(2=loose), input is not possible. Input required when 「急ぎサイン」(c16) is「2=緩」(2=loose).`
 - **Options:** `N/A`
@@ -416,7 +714,15 @@
 - **Data Type:** `TinyInt`
 - **Custom render:** `TinyInt`
 - **Source:**  
-  The desired time of loose judgment is calculated based on whether the late ship possible date exists. If it does, a 0 is returned.
+  1. If `T_NONURGENT_SHIPMENT.LATE_SHIP_POSSIBLE_DATE` is `NULL`, the result is `0`.
+
+  2. In all other cases, the result is also `0`.
+```sql
+  CASE
+                        WHEN T_NONURGENT_SHIPMENT.LATE_SHIP_POSSIBLE_DATE IS NULL THEN 0
+                        ELSE 0
+                    END AS c30
+  ```
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `When the「急ぎサイン」(c16) is other than 「2=緩」(2=loose), input is not possible.`
 - **Options:** `N/A`
@@ -430,7 +736,30 @@
 - **Data Type:** `Varchar`
 - **Custom render:** `String`
 - **Source:**  
-  The destination or delivery name is determined either from the `T_HANTEI` or `RSOS_M_LOCATION` table based on whether the delivery destination is available or fetched from the inventory location.
+    1. If `RSOS_T_PRODUCT_ORDER.OPERATION_ORG_DIV` matches the `OPERATION_ORG_DIV` from the `M_BUILDING_C` table, a JSON array of values from `M_DISPLAY_ITEM` where `ITEM_NO = 13` is selected.
+
+  2. If there is no match, the destination name is fetched from `RSOS_M_LOCATION` based on the `LOCATION_CODE` of the `RSOS_T_PRODUCT_ORDER.INVENTORY_LOCATION`.
+ ```sql
+  (CASE
+                        WHEN RSOS_T_PRODUCT_ORDER.OPERATION_ORG_DIV = (
+                            SELECT OPERATION_ORG_DIV
+                            FROM M_BUILDING_C
+                            WHERE M_BUILDING_C.OPERATION_ORG_DIV = RSOS_T_PRODUCT_ORDER.OPERATION_ORG_DIV
+                            LIMIT 1
+                        )
+                        THEN (
+                            SELECT JSON_ARRAYAGG(VALUE)
+                            FROM M_DISPLAY_ITEM
+                            WHERE ITEM_NO = 13
+                        )
+                        ELSE (
+                            SELECT LOCATION_NAME
+                            FROM RSOS_M_LOCATION
+                            WHERE LOCATION_CODE = RSOS_T_PRODUCT_ORDER.INVENTORY_LOCATION
+                            LIMIT 1
+                        )
+                    END) AS DELIVERY_DESTINATION
+  ```
 - **Save Destination:** `T_HANTEI.DELIVERY_DESTINATION_NAME`
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -444,7 +773,26 @@
 - **Data Type:** `Integer`
 - **Custom render:** `Integer`
 - **Source:**  
-  The number of pallets is calculated based on the quantity (`RSOS_V_JUDGE_PRODUCT.QTY`) and the pallet size (`USD.FUSRDEC2`) and other stock details. The result is returned after ceiling division.
+  1. If `USD.FUSRDEC2`, `USD.FUSRDEC3`, or `USD.FUSRDEC3 = 0` is null, the result is `NULL`.
+  
+  2. If the above condition is not met, the number of pallets is calculated as the ceiling of the division of the product quantity (`RSOS_V_JUDGE_PRODUCT.QTY`) by the pallet size. The pallet size is determined by:
+     - If `STD.SKORIIRISU` is not null and greater than 0, it is used.
+     - Otherwise, `USD.FUSRDEC2` is used.
+  
+  The division result is further divided by `USD.FUSRDEC3` to calculate the final number of pallets.
+  ```sql
+  CASE
+                        WHEN USD.FUSRDEC2 IS NULL OR USD.FUSRDEC3 IS NULL OR USD.FUSRDEC3 = 0 THEN NULL
+                        ELSE CEILING(
+                            RSOS_V_JUDGE_PRODUCT.QTY /
+                            (CASE
+                                WHEN STD.SKORIIRISU IS NOT NULL AND STD.SKORIIRISU > 0
+                                THEN STD.SKORIIRISU
+                                ELSE USD.FUSRDEC2
+                            END) / USD.FUSRDEC3
+                        )
+                    END AS c32
+  ```
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -455,10 +803,10 @@
 ### c33: **Whether Movement Ticket is Issued (移動票発行有無)**
 
 - **Header Label:** `Whether Movement Ticket is Issued (移動票発行有無)`
-- **Data Type:** `Date`
-- **Custom render:** `Date`
+- **Data Type:** `TinyInt`
+- **Custom render:** `String(0=X ,1=○)`
 - **Source:**  
-  Whether the movement ticket is issued is fetched from the `T_HANTEI` table by matching the `JUDGE_ID`. It returns `MOVE_TICKET_ISSUED`.
+  Whether the movement ticket is issued is fetched from the `T_HANTEI` table by matching the `ITEM_NO`. It returns `MOVE_TICKET_ISSUED`.
 - **Save Destination:** `T_HANTEI.MOVE_TICKET_ISSUED`
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -469,10 +817,10 @@
 ### c34: **Completion of Movement (移動完了有無)**
 
 - **Header Label:** `Completion of Movement (移動完了有無)`
-- **Data Type:** `Date`
-- **Custom render:** `Date`
+- **Data Type:** `TinyInt`
+- **Custom render:** `String(0=X ,1=○)`
 - **Source:**  
-  The completion of movement is fetched from the `T_HANTEI` table by matching the `JUDGE_ID`. It returns `MOVE_FINISHED`.
+  The completion of movement is fetched from the `T_HANTEI` table by matching the `ITEM_NO`. It returns `MOVE_FINISHED`.
 - **Save Destination:** `T_HANTEI.MOVE_FINISHED`
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -484,7 +832,7 @@
 
 - **Header Label:** `Multiple Locations Inventory Flag (複数拠点在庫フラグ)`
 - **Data Type:** `TinyInt`
-- **Custom render:** `TinyInt`
+- **Custom render:** `String(0=X ,1=○)`
 - **Source:**  
   The multiple locations inventory flag is calculated by counting stock entries from the relevant inventory tables (`ERP_TUNITYSTOCKHST_ALL` or `ERP_INVDTF`). A flag is set depending on the count.
 - **Save Destination:** `N/A` (Not editable)
@@ -510,13 +858,16 @@
 
 ### c37: **Under Stock Days Flag (在庫日数過少フラグ)**
 
-- **Header Label:** `Under Stock
-
- Days Flag (在庫日数過少フラグ)`
+- **Header Label:** `Under Stock Days Flag (在庫日数過少フラグ)`
 - **Data Type:** `TinyInt`
-- **Custom render:** `TinyInt`
+- **Custom render:** `String(0=X ,1=○)`
 - **Source:**  
-  The under stock days flag is calculated by comparing stock days against a threshold (e.g., 15 days). A flag is returned depending on whether the stock days meet the criteria.
+  1. If the stock days (`V_SCREPORT.STOCK_DAYS`) are less than 15 days, the flag is set to `'◯'` (indicating that stock days are below the threshold).
+  
+  2. If the stock days are 15 or more, the flag is set to `'X'` (indicating sufficient stock days).
+   ```sql
+  CASE WHEN V_SCREPORT.STOCK_DAYS < 15 THEN '◯' ELSE 'X' END AS c37
+  ```
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -528,9 +879,20 @@
 
 - **Header Label:** `Under Shipment Flag for the Current Month (当月残出荷予定数過少フラグ)`
 - **Data Type:** `TinyInt`
-- **Custom render:** `TinyInt`
+- **Custom render:** `String(0=X ,1=○)`
 - **Source:**  
-  The under shipment flag for the current month is calculated by comparing planned and actual shipment quantities for the month. If the difference is below a threshold, a flag is returned.
+  1. If the difference between the planned monthly quantity (`V_SCREPORT.MONTH_PLNQTY`) and the actual monthly quantity (`V_SCREPORT.MONTH_QTY`) is negative, the flag is set to `'◯'` (indicating that shipments are under the planned quantity).
+  
+  2. If the available passed stock quantity (`V_SCREPORT.PASSED_STOCK_QTY`) is less than the difference between the planned and actual quantities for the month, the flag is also set to `'◯'`.
+  
+  3. Otherwise, the flag is set to `'X'` (indicating sufficient shipments for the current month).
+   ```sql
+  CASE
+                        WHEN (V_SCREPORT.MONTH_PLNQTY - V_SCREPORT.MONTH_QTY) < 0 THEN '◯'
+                        WHEN V_SCREPORT.PASSED_STOCK_QTY < (V_SCREPORT.MONTH_PLNQTY - V_SCREPORT.MONTH_QTY) THEN '◯'
+                        ELSE 'X'
+                    END AS c38
+  ```
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -542,9 +904,23 @@
 
 - **Header Label:** `Short-Term Under-Planned Flag for the Following Month (翌月短期予定過少フラグ)`
 - **Data Type:** `TinyInt`
-- **Custom render:** `TinyInt`
+- **Custom render:** `String(0=X ,1=○)`
 - **Source:**  
-  The short-term under-planned flag for the following month is calculated by comparing planned quantities for the current and next month against stock levels. A flag is returned based on the comparison.
+  1. If the available passed stock quantity (`V_SCREPORT.PASSED_STOCK_QTY`) is less than the sum of the remaining planned monthly quantity (`V_SCREPORT.MONTH_PLNQTY - V_SCREPORT.MONTH_QTY`) and the next month's planned quantity (`V_SCREPORT.NEXT_MONTH_PLNQTY`), the flag is set to `'◯'`.
+  
+  2. If the remaining planned quantity for the current month (`V_SCREPORT.MONTH_PLNQTY - V_SCREPORT.MONTH_QTY`) is negative, the flag is set to `'◯'`.
+  
+  3. If the available passed stock quantity (`V_SCREPORT.PASSED_STOCK_QTY`) is less than the next month's planned quantity (`V_SCREPORT.NEXT_MONTH_PLNQTY`), the flag is set to `'◯'`.
+
+  4. Otherwise, the flag is set to `'X'`, indicating that the planned shipments for the following month are sufficient.
+   ```sql
+  CASE
+                        WHEN V_SCREPORT.PASSED_STOCK_QTY < (V_SCREPORT.MONTH_PLNQTY- MONTH_QTY + V_SCREPORT.NEXT_MONTH_PLNQTY) THEN '◯'
+                        WHEN V_SCREPORT.MONTH_PLNQTY- MONTH_QTY < 0 THEN '◯'
+                        WHEN  V_SCREPORT.PASSED_STOCK_QTY < V_SCREPORT.NEXT_MONTH_PLNQTY THEN '◯'
+                        ELSE 'X'
+                    END AS c39
+  ```
 - **Save Destination:** `N/A` (Not editable)
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -556,9 +932,11 @@
 
 - **Header Label:** `Judgment Report (成績書)`
 - **Data Type:** `TinyInt`
-- **Custom render:** `TinyInt`
+- **Custom render:** 
+  - Fetch items from `M_DISPLAY_ITEMS` (ITEM_NO=7)
+  - From `M_DISPLAY_ITEMS`, use VALUE as label for UI
 - **Source:**  
-  The status of the judgment report is fetched from the `T_HANTEI` table by matching the `JUDGE_ID`. It returns `CERTIFICATE_STATUS`.
+  The status of the judgment report is fetched from the `T_HANTEI` table by matching the `ITEM_NO`. It returns `CERTIFICATE_STATUS`.
 - **Save Destination:** `T_HANTEI.CERTIFICATE_STATUS`
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -570,9 +948,11 @@
 
 - **Header Label:** `Send Email (メール送信)`
 - **Data Type:** `TinyInt`
-- **Custom render:** `TinyInt`
+- **Custom render:** 
+  - Fetch items from `M_DISPLAY_ITEMS` (ITEM_NO=8)
+  - From `M_DISPLAY_ITEMS`, use VALUE as label for UI
 - **Source:**  
-  Whether an email has been sent is fetched from the `T_HANTEI` table by matching the `JUDGE_ID`. It returns `SEND_MAIL_STATUS`.
+  Whether an email has been sent is fetched from the `T_HANTEI` table by matching the `ITEM_NO`. It returns `SEND_MAIL_STATUS`.
 - **Save Destination:** `T_HANTEI.SEND_MAIL_STATUS`
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -584,9 +964,9 @@
 
 - **Header Label:** `Date of NETP Judgment (NETP判定日)`
 - **Data Type:** `Date`
-- **Custom render:** `Date`
+- **Custom render:** `String(YYYY-MM-DD)`
 - **Source:**  
-  The date of the NETP judgment is fetched from the `T_HANTEI` table by matching the `JUDGE_ID`. It returns `NETP_JUDGE_DATE`.
+  The date of the NETP judgment is fetched from the `T_HANTEI` table by matching the `ITEM_NO`. It returns `NETP_JUDGE_DATE`.
 - **Save Destination:** `T_HANTEI.NETP_JUDGE_DATE`
 - **Validation:** `If null,「未」(not yet) is displayed.`
 - **Options:** `N/A`
@@ -598,7 +978,7 @@
 
 - **Header Label:** `Last Update (最終更新日時)`
 - **Data Type:** `Datetime`
-- **Custom render:** `Datetime`
+- **Custom render:** `String(YYYY-MM-DD)`
 - **Source:**  
   The last update time is fetched from the `T_RESPONSE` table by matching the `RESPONSE_ID`. It returns `UPDATE_RECORD_TIME`.
 - **Save Destination:** `N/A` (Not editable)
@@ -618,12 +998,16 @@
 
 - **Header Label:** `Urgent Sign (急ぎサイン)`
 - **Data Type:** `TinyInt`
-- **Custom render:** `The urgent sign is retrieved from the T_HANTEI table and M_DISPLAY_ITEM.ITEM_NO=2 by matching the JUDGE_ID. The URGENT_TYPE is returned as the urgent sign.`
+- **Custom render:** 
+  - Fetch items from `M_DISPLAY_ITEMS` (ITEM_NO=2)
+  - From `M_DISPLAY_ITEMS`, use  ID as key and VALUE as label for UI
 - **Source:**  
-  The urgent sign is fetched from the `T_HANTEI` table, and the `URGENT_TYPE` is matched with the `JUDGE_ID` and item `M_DISPLAY_ITEM.ITEM_NO=2`.
+  The urgent sign is fetched from the `T_HANTEI` table by matching the `ITEM_NO`. It returns `URGENT_TYPE`.
 - **Save Destination:** `T_HANTEI.URGENT_TYPE`
 - **Validation:** `N/A`
-- **Options:** `0: 内製, 1: 外製`
+- **Options:** 
+  - Fetch items from `M_DISPLAY_ITEMS` (ITEM_NO=2)
+  - From `M_DISPLAY_ITEMS`, use ID as the key and VALUE as the label for options
 - **Remarks:** Displays the urgent sign, fetched from the `T_HANTEI` table.
 
 ---
@@ -632,9 +1016,9 @@
 
 - **Header Label:** `Urgent Request Date (急ぎ依頼日)`
 - **Data Type:** `Date`
-- **Custom render:** `Date`
+- **Custom render:** `String(YYYY-MM-DD)`
 - **Source:**  
-  The urgent request date is fetched from the `T_HANTEI` table by matching the `JUDGE_ID`. It returns the `URGENT_REQ_DATE`.
+  The urgent request date is fetched from the `T_HANTEI` table by matching the `ITEM_NO`. It returns the `URGENT_REQ_DATE`.
 - **Save Destination:** `T_HANTEI.URGENT_REQ_DATE`
 - **Validation:** `Set today's date when setting「急ぎサイン」(c16). Required when input 「急ぎサイン」(c16).`
 - **Options:** `N/A`
@@ -646,9 +1030,9 @@
 
 - **Header Label:** `Desired Date of Urgent Judgment (急ぎ判定希望日)`
 - **Data Type:** `Date`
-- **Custom render:** `Date`
+- **Custom render:** `String(YYYY-MM-DD)`
 - **Source:**  
-  The desired date for urgent judgment is fetched from the `T_HANTEI` table by matching the `JUDGE_ID`. It returns the `URGENT_JUDGE_REQ_DATE`.
+  The desired date for urgent judgment is fetched from the `T_HANTEI` table by matching the `ITEM_NO`. It returns the `URGENT_JUDGE_REQ_DATE`.
 - **Save Destination:** `T_HANTEI.URGENT_JUDGE_REQ_DATE`
 - **Validation:** `When the「急ぎサイン」(c16) is other than「1=急」(1=urgent), input is not possible. Required when「急ぎサイン」(c16) is「1=急」(1=urgent).`
 - **Options:** `N/A`
@@ -660,12 +1044,16 @@
 
 - **Header Label:** `Desired Time for Urgent Judgment (急ぎ判定希望時間)`
 - **Data Type:** `TinyInt`
-- **Custom render:** `TinyInt`
+- **Custom render:**  
+  - Fetch items from `M_DISPLAY_ITEMS` (ITEM_NO=4)
+  - From `M_DISPLAY_ITEMS`, use  ID as key and VALUE as label for UI
 - **Source:**  
-  The desired time for urgent judgment is fetched from the `T_HANTEI` table by matching the `JUDGE_ID`. It returns the `URGENT_JUDGE_REQ_TIME`.
+  The `URGENT_JUDGE_REQ_TIME` is fetched from the `T_HANTEI` table by matching the `ITEM_NO`. It returns the `URGENT_JUDGE_REQ_TIME` then it will be matched with the `ID` and item from `M_DISPLAY_ITEM.
 - **Save Destination:** `T_HANTEI.URGENT_JUDGE_REQ_TIME`
 - **Validation:** `When the「急ぎサイン」(c16) is other than「1=急」(1=urgent), input is not possible.`
-- **Options:** `N/A`
+- **Options:** 
+  - Fetch items from M_DISPLAY_ITEMS (ITEM_NO=4)
+  - From M_DISPLAY_ITEMS, use ID as key and VALUE as label for options
 - **Remarks:** Displays the desired time for urgent judgment, fetched from the `T_HANTEI` table.
 
 ---
@@ -676,7 +1064,7 @@
 - **Data Type:** `TinyInt`
 - **Custom render:** `TinyInt`
 - **Source:**  
-  The attribute (color-coded) is fetched from the `T_HANTEI` table by matching the `JUDGE_ID`. It returns the `URGENT_ATTRIBUTE`.
+  The attribute (color-coded) is fetched from the `T_HANTEI` table by matching the `ITEM_NO`. It returns the `URGENT_ATTRIBUTE`.
 - **Save Destination:** `T_HANTEI.URGENT_ATTRIBUTE`
 - **Validation:** `When「急ぎサイン」(c16) is「1=急」(1=urgent), input required.`
 - **Options:** `N/A`
@@ -688,9 +1076,93 @@
 
 - **Header Label:** `Desired Movement Date (移動希望日)`
 - **Data Type:** `Date`
-- **Custom render:** `Date`
+- **Custom render:** `String(YYYY-MM-DD)`
 - **Source:**  
-  The desired movement date is calculated using logic based on the plant division name, urgent type, and other factors. It uses the calendar (`ERP_CALEM`) and the maximum date after considering the relevant conditions.
+  - If the plant division name in the RSOS_V_JUDGE_PRODUCT table is '大阪' and the urgent type in the T_HANTEI table is 1, check if the plant division name or location in the T_HANTEI or RSOS_M_LOCATION tables is either '梅田倉庫' or 'トランスシティ'.
+  - If the condition is met, and the response answer date (URGENT_JUDGE_RESP_ANS_DATE) in the T_RESPONSE table or the urgent judge request date (URGENT_JUDGE_REQ_DATE) in the T_HANTEI table exists, calculate the maximum date (FDATE) from the ERP_CALEM table where the date (FDATE) is greater than either the response answer date or request date, considering working days (FHOLIDAYFLG = 'W').
+  - If the plant division is '上野工場' or not '大阪', no movement date is calculated.
+  - If the urgent type in the T_HANTEI table is not 1, calculate based on other conditions by considering plant division name or location and response time from the T_RESPONSE table.
+  ```sql
+  CASE
+                        WHEN RSOS_V_JUDGE_PRODUCT.PLANT_DIVISION_NAME = '大阪' AND T_HANTEI.URGENT_TYPE = 1 THEN
+                            CASE
+                                WHEN COALESCE(T_HANTEI.PLANT_DIVISION_NAME, RSOS_M_LOCATION.LOCATION_NAME) IN ('梅田倉庫', 'トランスシティ') THEN
+                                    CASE
+                                        WHEN
+                                            (CASE
+                                                WHEN T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE IS NOT NULL THEN T_RESPONSE.URGENT_JUDGE_RESP_ANS_TIME
+                                                WHEN T_HANTEI.URGENT_JUDGE_REQ_DATE IS NOT NULL THEN T_HANTEI.URGENT_JUDGE_REQ_TIME
+                                                ELSE 0
+                                            END) = 1 THEN
+                                            (SELECT MAX(FDATE) FROM (SELECT FDATE FROM ERP_CALEM WHERE FCALETYP = 'A' AND FDATE > COALESCE(T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE,
+                            T_HANTEI.URGENT_JUDGE_REQ_DATE,
+                            RSOS_V_JUDGE_PRODUCT.SHIP_JUDGE_SCH_DATE) AND FHOLIDAYFLG = 'W' ORDER BY FDATE ASC LIMIT 1) AS DATE_LIST)
+                                        ELSE
+                                            (SELECT MAX(FDATE) FROM (SELECT FDATE FROM ERP_CALEM WHERE FCALETYP = 'A' AND FDATE > COALESCE(T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE,
+                            T_HANTEI.URGENT_JUDGE_REQ_DATE,
+                            RSOS_V_JUDGE_PRODUCT.SHIP_JUDGE_SCH_DATE) AND FHOLIDAYFLG = 'W' ORDER BY FDATE ASC LIMIT 2) AS DATE_LIST)
+                                    END
+                                ELSE
+                                    CASE
+                                        WHEN
+                                            (CASE
+                                                WHEN T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE IS NOT NULL THEN T_RESPONSE.URGENT_JUDGE_RESP_ANS_TIME
+                                                WHEN T_HANTEI.URGENT_JUDGE_REQ_DATE IS NOT NULL THEN T_HANTEI.URGENT_JUDGE_REQ_TIME
+                                                ELSE 0
+                                            END) = 1 THEN
+                                            COALESCE(T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE,
+                            T_HANTEI.URGENT_JUDGE_REQ_DATE,
+                            RSOS_V_JUDGE_PRODUCT.SHIP_JUDGE_SCH_DATE)
+                                        ELSE
+                                            (SELECT MAX(FDATE) FROM (SELECT FDATE FROM ERP_CALEM WHERE FCALETYP = 'A' AND FDATE > COALESCE(T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE,
+                            T_HANTEI.URGENT_JUDGE_REQ_DATE,
+                            RSOS_V_JUDGE_PRODUCT.SHIP_JUDGE_SCH_DATE) AND FHOLIDAYFLG = 'W' ORDER BY FDATE ASC LIMIT 1) AS DATE_LIST)
+                                    END
+                            END
+                        WHEN RSOS_V_JUDGE_PRODUCT.PLANT_DIVISION_NAME = '上野工場' OR RSOS_V_JUDGE_PRODUCT.PLANT_DIVISION_NAME <> '大阪' THEN
+                            NULL
+                        ELSE
+                            CASE
+                                WHEN T_HANTEI.URGENT_TYPE != 1 THEN
+                                    CASE
+                                        WHEN COALESCE(T_HANTEI.PLANT_DIVISION_NAME, RSOS_M_LOCATION.LOCATION_NAME) IN ('梅田倉庫', 'トランスシティ') THEN
+                                            CASE
+                                                WHEN
+                                                    (CASE
+                                                        WHEN T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE IS NOT NULL THEN T_RESPONSE.URGENT_JUDGE_RESP_ANS_TIME
+                                                        WHEN T_HANTEI.URGENT_JUDGE_REQ_DATE IS NOT NULL THEN T_HANTEI.URGENT_JUDGE_REQ_TIME
+                                                        ELSE 0
+                                                    END) = 1 THEN
+                                                    (SELECT MAX(FDATE) FROM (SELECT FDATE FROM ERP_CALEM WHERE FCALETYP = 'A' AND FDATE > COALESCE(T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE,
+                            T_HANTEI.URGENT_JUDGE_REQ_DATE,
+                            RSOS_V_JUDGE_PRODUCT.SHIP_JUDGE_SCH_DATE) AND FHOLIDAYFLG = 'W' ORDER BY FDATE ASC LIMIT 2) AS DATE_LIST)
+                                                ELSE
+                                                    (SELECT MAX(FDATE) FROM (SELECT FDATE FROM ERP_CALEM WHERE FCALETYP = 'A' AND FDATE > COALESCE(T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE,
+                            T_HANTEI.URGENT_JUDGE_REQ_DATE,
+                            RSOS_V_JUDGE_PRODUCT.SHIP_JUDGE_SCH_DATE) AND FHOLIDAYFLG = 'W' ORDER BY FDATE ASC LIMIT 3) AS DATE_LIST)
+                                            END
+                                        ELSE
+                                            CASE
+                                                WHEN
+                                                    (CASE
+                                                        WHEN T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE IS NOT NULL THEN T_RESPONSE.URGENT_JUDGE_RESP_ANS_TIME
+                                                        WHEN T_HANTEI.URGENT_JUDGE_REQ_DATE IS NOT NULL THEN T_HANTEI.URGENT_JUDGE_REQ_TIME
+                                                        ELSE 0
+                                                    END) = 1 THEN
+                                                    (SELECT MAX(FDATE) FROM (SELECT FDATE FROM ERP_CALEM WHERE FCALETYP = 'A' AND FDATE > COALESCE(T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE,
+                            T_HANTEI.URGENT_JUDGE_REQ_DATE,
+                            RSOS_V_JUDGE_PRODUCT.SHIP_JUDGE_SCH_DATE) AND FHOLIDAYFLG = 'W' ORDER BY FDATE ASC LIMIT 1) AS DATE_LIST)
+                                                ELSE
+                                                    (SELECT MAX(FDATE) FROM (SELECT FDATE FROM ERP_CALEM WHERE FCALETYP = 'A' AND FDATE > COALESCE(T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE,
+                            T_HANTEI.URGENT_JUDGE_REQ_DATE,
+                            RSOS_V_JUDGE_PRODUCT.SHIP_JUDGE_SCH_DATE) AND FHOLIDAYFLG = 'W' ORDER BY FDATE ASC LIMIT 2) AS DATE_LIST)
+                                            END
+                                    END
+                                ELSE
+                                    NULL
+                            END
+                    END AS MOVE_REQ_DATE
+  ```
 - **Save Destination:** `T_HANTEI.MOVE_REQ_DATE`
 - **Validation:** `N/A`
 - **Options:** `N/A`
@@ -702,12 +1174,73 @@
 
 - **Header Label:** `Evening Packing・Morning Delivery Sign (宵積サイン)`
 - **Data Type:** `TinyInt`
-- **Custom render:** `TinyInt`
+- **Custom render:** `String(AM/PM)` 1= AM, 0=PM
 - **Source:**  
-  The evening packing or morning delivery sign is calculated based on the plant division name and urgent type. It considers various factors, including response times and plant locations, and returns either a 0 or 1.
+   1. If the plant division name in the `RSOS_V_JUDGE_PRODUCT` table is '大阪' and the urgent type in the `T_HANTEI` table is 1, then:
+     - Check if the plant division name or location in the `T_HANTEI` or `RSOS_M_LOCATION` tables is either '梅田倉庫' or 'トランスシティ'.
+     - If the response answer date (`URGENT_JUDGE_RESP_ANS_DATE`) in the `T_RESPONSE` table or the urgent judge request date (`URGENT_JUDGE_REQ_DATE`) in the `T_HANTEI` table is present and the response answer time or request time is 1, then return 0; otherwise, return 1.
+  
+  2. If the plant division name in the `RSOS_V_JUDGE_PRODUCT` table is '上野工場' or any value other than '大阪', return 0.
+
+  3. If the urgent type in the `T_HANTEI` table is not 1, similar logic is applied based on the plant division name, urgent judge request date, and response times from the `T_RESPONSE` table.
+
+  This logic uses data from `RSOS_V_JUDGE_PRODUCT`, `T_HANTEI`, `T_RESPONSE`, and `RSOS_M_LOCATION` tables to determine if the evening packing or morning delivery sign should be flagged (0 or 1).
+  ```sql
+  CASE
+                        WHEN RSOS_V_JUDGE_PRODUCT.PLANT_DIVISION_NAME = '大阪' AND T_HANTEI.URGENT_TYPE = 1 THEN
+                            CASE
+                                WHEN COALESCE(T_HANTEI.PLANT_DIVISION_NAME, RSOS_M_LOCATION.LOCATION_NAME) IN ('梅田倉庫', 'トランスシティ') THEN
+                                    CASE
+                                        WHEN
+                                            (CASE
+                                                WHEN T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE IS NOT NULL THEN T_RESPONSE.URGENT_JUDGE_RESP_ANS_TIME
+                                                WHEN T_HANTEI.URGENT_JUDGE_REQ_DATE IS NOT NULL THEN T_HANTEI.URGENT_JUDGE_REQ_TIME
+                                                ELSE 0
+                                            END) = 1 THEN 0 ELSE 0
+                                    END
+                                ELSE
+                                    CASE
+                                        WHEN
+                                            (CASE
+                                                WHEN T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE IS NOT NULL THEN T_RESPONSE.URGENT_JUDGE_RESP_ANS_TIME
+                                                WHEN T_HANTEI.URGENT_JUDGE_REQ_DATE IS NOT NULL THEN T_HANTEI.URGENT_JUDGE_REQ_TIME
+                                                ELSE 0
+                                            END) = 1 THEN 1 ELSE 0
+                                    END
+                            END
+                        WHEN RSOS_V_JUDGE_PRODUCT.PLANT_DIVISION_NAME = '上野工場' OR RSOS_V_JUDGE_PRODUCT.PLANT_DIVISION_NAME <> '大阪' THEN
+                            0
+                        ELSE
+                            CASE
+                                WHEN T_HANTEI.URGENT_TYPE != 1 THEN
+                                    CASE
+                                        WHEN COALESCE(T_HANTEI.PLANT_DIVISION_NAME, RSOS_M_LOCATION.LOCATION_NAME) IN ('梅田倉庫', 'トランスシティ') THEN
+                                            CASE
+                                                WHEN
+                                                    (CASE
+                                                        WHEN T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE IS NOT NULL THEN T_RESPONSE.URGENT_JUDGE_RESP_ANS_TIME
+                                                        WHEN T_HANTEI.URGENT_JUDGE_REQ_DATE IS NOT NULL THEN T_HANTEI.URGENT_JUDGE_REQ_TIME
+                                                        ELSE 0
+                                                    END) = 1 THEN 0 ELSE 0
+                                            END
+                                        ELSE
+                                            CASE
+                                                WHEN
+                                                    (CASE
+                                                        WHEN T_RESPONSE.URGENT_JUDGE_RESP_ANS_DATE IS NOT NULL THEN T_RESPONSE.URGENT_JUDGE_RESP_ANS_TIME
+                                                        WHEN T_HANTEI.URGENT_JUDGE_REQ_DATE IS NOT NULL THEN T_HANTEI.URGENT_JUDGE_REQ_TIME
+                                                        ELSE 0
+                                                    END) = 1 THEN 1 ELSE 0
+                                            END
+                                    END
+                                ELSE
+                                    0
+                            END
+                    END AS VESPER_FLAG
+  ```
 - **Save Destination:** `T_HANTEI.VESPER_FLAG`
 - **Validation:** `N/A`
-- **Options:** `N/A`
+- **Options:** `1= AM, 0=PM`
 - **Remarks:** Displays the evening packing or morning delivery sign, calculated based on predefined logic.
 
 ---
@@ -729,13 +1262,13 @@
 ### c33: **Whether Movement Ticket is Issued (移動票発行有無)**
 
 - **Header Label:** `Whether Movement Ticket is Issued (移動票発行有無)`
-- **Data Type:** `Date`
-- **Custom render:** `Date`
+- **Data Type:** `TinyInt`
+- **Custom render:** `String(0=X ,1=○)`
 - **Source:**  
-  Whether the movement ticket is issued is fetched from the `T_HANTEI` table by matching the `JUDGE_ID`. It returns the `MOVE_TICKET_ISSUED`.
+  Whether the movement ticket is issued is fetched from the `T_HANTEI` table by matching the `ITEM_NO`. It returns `MOVE_TICKET_ISSUED`.
 - **Save Destination:** `T_HANTEI.MOVE_TICKET_ISSUED`
 - **Validation:** `N/A`
-- **Options:** `N/A`
+- **Options:** `0 配荷,1 生産トラブル,2 輸出引き当て,3 セット加工用単品抜き取り`
 - **Remarks:** Displays whether the movement ticket has been issued, fetched from the `T_HANTEI` table.
 
 ---
@@ -743,13 +1276,13 @@
 ### c34: **Completion of Movement (移動完了有無)**
 
 - **Header Label:** `Completion of Movement (移動完了有無)`
-- **Data Type:** `Date`
-- **Custom render:** `Date`
+- **Data Type:** `TinyInt`
+- **Custom render:** `String(0=X ,1=○)`
 - **Source:**  
-  The completion of movement is fetched from the `T_HANTEI` table by matching the `JUDGE_ID`. It returns the `MOVE_FINISHED`.
+  The completion of movement is fetched from the `T_HANTEI` table by matching the `ITEM_NO`. It returns `MOVE_FINISHED`.
 - **Save Destination:** `T_HANTEI.MOVE_FINISHED`
 - **Validation:** `N/A`
-- **Options:** `N/A`
+- **Options:** `0 配荷,1 生産トラブル,2 輸出引き当て,3 セット加工用単品抜き取り`
 - **Remarks:** Displays whether the movement has been completed, fetched from the `T_HANTEI` table.
 
 ---
@@ -758,12 +1291,16 @@
 
 - **Header Label:** `Judgment Report (成績書)`
 - **Data Type:** `TinyInt`
-- **Custom render:** `TinyInt`
+- **Custom render:** 
+  - Fetch items from `M_DISPLAY_ITEMS` (ITEM_NO=7)
+  - From `M_DISPLAY_ITEMS`, use ID as key and VALUE as label for UI
 - **Source:**  
-  The status of the judgment report is fetched from the `T_HANTEI` table by matching the `JUDGE_ID`. It returns `CERTIFICATE_STATUS`.
+  The status of the judgment report is fetched from the `T_HANTEI` table by matching the `ITEM_NO`. It returns `CERTIFICATE_STATUS`.
 - **Save Destination:** `T_HANTEI.CERTIFICATE_STATUS`
 - **Validation:** `N/A`
-- **Options:** `N/A`
+- **Options:** 
+  - Fetch items from M_DISPLAY_ITEMS (ITEM_NO=7)
+- From M_DISPLAY_ITEMS, use ID as key and VALUE as label for options
 - **Remarks:** Displays the status of the judgment report, fetched from the `T_HANTEI` table.
 
 ---
@@ -772,12 +1309,16 @@
 
 - **Header Label:** `Send Email (メール送信)`
 - **Data Type:** `TinyInt`
-- **Custom render:** `TinyInt`
+- **Custom render:** 
+  - Fetch items from `M_DISPLAY_ITEMS` (ITEM_NO=8)
+  - From `M_DISPLAY_ITEMS`, use ID as key and VALUE as label for UI
 - **Source:**  
-  Whether an email has been sent is fetched from the `T_HANTEI` table by matching the `JUDGE_ID`. It returns the `SEND_MAIL_STATUS`.
+  Whether an email has been sent is fetched from the `T_HANTEI` table by matching the `ITEM_NO`. It returns `SEND_MAIL_STATUS`.
 - **Save Destination:** `T_HANTEI.SEND_MAIL_STATUS`
 - **Validation:** `N/A`
-- **Options:** `N/A`
+- **Options:** 
+  - Fetch items from M_DISPLAY_ITEMS (ITEM_NO=8)
+- From M_DISPLAY_ITEMS, use ID as key and VALUE as label for options
 - **Remarks:** Displays whether an email has been sent, fetched from the `T_HANTEI` table.
 
 ---
@@ -786,18 +1327,13 @@
 
 - **Header Label:** `Date of NETP Judgment (NETP判定日)`
 - **Data Type:** `Date`
-- **Custom
-
- render:** `Date`
+- **Custom render:** `String(YYYY-MM-DD)`
 - **Source:**  
-  The date of the NETP judgment is fetched from the `T_HANTEI` table by matching the `JUDGE_ID`. It returns the `NETP_JUDGE_DATE`.
+  The date of the NETP judgment is fetched from the `T_HANTEI` table by matching the `ITEM_NO`. It returns the `NETP_JUDGE_DATE`.
 - **Save Destination:** `T_HANTEI.NETP_JUDGE_DATE`
 - **Validation:** `If null,「未」(not yet) is displayed.`
 - **Options:** `N/A`
 - **Remarks:** Displays the date of the NETP judgment, fetched from the `T_HANTEI` table.
-
----
-
 
 ---------------------------------------------------------
 ---------------------------------------------------------
